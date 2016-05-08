@@ -40,6 +40,9 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="text">
+    <string>ura1995</string>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
@@ -75,6 +78,12 @@
      <width>171</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="text">
+    <string>1</string>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">

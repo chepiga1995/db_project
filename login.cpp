@@ -1,15 +1,18 @@
 #include "login.h"
 #include "ui_login.h"
 #include "mainwindow.h"
-#include <QSqlDatabase>
+#include <QSql>
 #include <QSqlQuery>
+#include <qDebug>
+
+extern QSqlQuery mainUser;
 
 Login::Login(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Login)
 {
     ui->setupUi(this);
-    this->tempDB = QSqlDatabase::addDatabase("QPSQL");
+    this->tempDB = QSqlDatabase::addDatabase("QPSQL", "tempConnection");
     this->tempDB.setHostName("52.31.46.192");
     this->tempDB.setDatabaseName("db_project");
     this->tempDB.setUserName("admin");
@@ -76,13 +79,34 @@ void Login::on_pushButton_clicked()
     }
     else
     {
-        MainWindow *m = new MainWindow();
-        m->show();
-        this->hide();
+        query.first();
+        mainUser = query;
+        this->setupMainConnection();
     }
 }
 
 void Login::on_pushButton_2_clicked()
 {
     this->init();
+}
+
+void Login::setupMainConnection()
+{
+    QSqlDatabase mainConnection = QSqlDatabase::addDatabase("QPSQL");
+    mainConnection.setHostName("52.31.46.192");
+    mainConnection.setDatabaseName("db_project");
+    mainConnection.setUserName("admin");
+    mainConnection.setPassword("1230");
+    qDebug() << mainUser.value("login").toString();
+    bool ok = mainConnection.open();
+    if(ok != true)
+    {
+        this->initFaild();
+    }
+    else
+    {
+        MainWindow *m = new MainWindow();
+        m->show();
+        this->hide();
+    }
 }

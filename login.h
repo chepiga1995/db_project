@@ -18,6 +18,7 @@ private:
     void init();
     void initFaild();
     void initSuccess();
+    void setupMainConnection();
     QSqlDatabase tempDB;
 private slots:
     void on_pushButton_clicked();
