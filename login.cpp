@@ -3,7 +3,7 @@
 #include "mainwindow.h"
 #include <QSql>
 #include <QSqlQuery>
-#include <qDebug>
+
 
 extern QSqlQuery mainUser;
 
@@ -97,7 +97,7 @@ void Login::setupMainConnection()
     mainConnection.setDatabaseName("db_project");
     mainConnection.setUserName("admin");
     mainConnection.setPassword("1230");
-    qDebug() << mainUser.value("login").toString();
+
     bool ok = mainConnection.open();
     if(ok != true)
     {
@@ -105,8 +105,9 @@ void Login::setupMainConnection()
     }
     else
     {
-        MainWindow *m = new MainWindow();
-        m->show();
+        MainWindow *mainWindow = new MainWindow();
+        mainWindow->show();
+
         this->hide();
     }
 }

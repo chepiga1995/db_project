@@ -2,7 +2,6 @@
 #include <QApplication>
 #include <QSqlQuery>
 #include "login.h"
-
 QSqlQuery mainUser;
 
 int main(int argc, char *argv[])

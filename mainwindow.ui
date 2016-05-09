@@ -116,6 +116,36 @@
         <height>531</height>
        </rect>
       </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>200</number>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>40</number>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>80</number>
+      </attribute>
      </widget>
      <widget class="QGroupBox" name="groupBox_2">
       <property name="geometry">
@@ -176,7 +206,7 @@
        </rect>
       </property>
       <property name="title">
-       <string>Нова вміння</string>
+       <string>Нове вміння</string>
       </property>
       <widget class="QTextEdit" name="textEdit">
        <property name="geometry">
