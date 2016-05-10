@@ -10,11 +10,18 @@ public:
     Skills();
     ~Skills();
     void refresh();
+    void search(QString &);
+    void sort(int, int);
+    void addSkill(QString &, QString &);
 signals:
     void changeSkillsModel(QSqlQueryModel *);
+    void clearNewSkillFields();
+    void raiseAddSkillError();
 private:
     QSqlQueryModel * getSkillsModel();
-
+    QString searchName;
+    QString sortField;
+    QString sortOrder;
 };
 
 #endif // SKILLS_H
