@@ -1,11 +1,11 @@
-#include "skills.h"
+#include "skill.h"
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <qDebug>
 
 //--------------constructor----------------
 
-Skills::Skills()
+Skill::Skill()
 {
     searchName = "";
     sortField = "name";
@@ -14,13 +14,13 @@ Skills::Skills()
 
 //--------------destructor----------------
 
-Skills::~Skills() {
+Skill::~Skill() {
 
 }
 
 //--------------custom methods--------------
 
-QSqlQueryModel * Skills::getSkillsModel(){
+QSqlQueryModel * Skill::getSkillModel(){
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query;
     query.prepare("SELECT name, description FROM skills WHERE name ~ :name ORDER BY " + sortField + " " + sortOrder);
@@ -33,12 +33,12 @@ QSqlQueryModel * Skills::getSkillsModel(){
     return model;
 }
 
-void Skills::refresh(){
-    QSqlQueryModel *model = this->getSkillsModel();
-    emit changeSkillsModel(model);
+void Skill::refresh(){
+    QSqlQueryModel *model = this->getSkillModel();
+    emit changeSkillModel(model);
 }
 
-void Skills::addSkill(QString & name, QString & description){
+void Skill::addSkill(QString & name, QString & description){
     QSqlQuery query;
     query.prepare("INSERT INTO skills (name, description) "
                   "VALUES (:name, :description)");
@@ -54,12 +54,12 @@ void Skills::addSkill(QString & name, QString & description){
     }
 }
 
-void Skills::search(QString & name){
+void Skill::search(QString & name){
     searchName = name;
     refresh();
 }
 
-void Skills::sort(int field, int order){
+void Skill::sort(int field, int order){
     QString fieldIndex[2] = {"name", "description"};
     QString sortIndex[2] = {"ASC", "DESC"};
     sortField = fieldIndex[field];

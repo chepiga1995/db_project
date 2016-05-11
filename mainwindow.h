@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include <QSqlDatabase>
-#include "skills.h"
+#include "skill.h"
+#include "vacation_type.h"
 
 namespace Ui {
     class MainWindow;
@@ -15,24 +16,34 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void initSkills();
+    void initSkill();
+    void initVacationType();
     ~MainWindow();
 
 public slots:
-    void setSkillsModel(QSqlQueryModel *);
-    void changeSortFieldSkills(int);
+//Skill
+    void setSkillModel(QSqlQueryModel *);
+    void changeSortFieldSkill(int);
     void clearSkillFields();
-    void showSkillsAddError();
-
+    void showSkillAddError();
+//vacation type
+    void setVacationTypeModel(QSqlQueryModel *);
+    void changeSortFieldVacationType(int);
+    void clearVacationTypeFields();
+    void showVacationTypeAddError();
 private slots:
-    void on_pushButton_2_clicked();
+    void on_addSkill_clicked();
 
-    void on_pushButton_clicked();
+    void on_findSkill_clicked();
 
+    void on_addVacationType_clicked();
+
+    void on_findVacationType_clicked();
 
 private:
     Ui::MainWindow *ui;
-    Skills *skills;
+    Skill *skill;
+    VacationType *vacation_type;
     void setupConnections();
 
 };

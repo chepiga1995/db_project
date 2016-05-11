@@ -4,21 +4,21 @@
 
 #include <QtCore>
 
-class Skills: public QObject {
+class Skill: public QObject {
     Q_OBJECT
 public:
-    Skills();
-    ~Skills();
+    Skill();
+    ~Skill();
     void refresh();
     void search(QString &);
     void sort(int, int);
     void addSkill(QString &, QString &);
 signals:
-    void changeSkillsModel(QSqlQueryModel *);
+    void changeSkillModel(QSqlQueryModel *);
     void clearNewSkillFields();
     void raiseAddSkillError();
 private:
-    QSqlQueryModel * getSkillsModel();
+    QSqlQueryModel * getSkillModel();
     QString searchName;
     QString sortField;
     QString sortOrder;
