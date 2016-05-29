@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include "skill.h"
 #include "vacation_type.h"
+#include "post.h"
 
 namespace Ui {
     class MainWindow;
@@ -40,9 +41,12 @@ private slots:
 
     void on_findVacationType_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;
+    Post *post;
     VacationType *vacation_type;
     void setupConnections();
 

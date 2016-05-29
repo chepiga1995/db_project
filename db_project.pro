@@ -16,12 +16,17 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     login.cpp \
     vacation_type.cpp \
-    skill.cpp
+    skill.cpp \
+    post.cpp \
+    addpost.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
     vacation_type.h \
-    skill.h
+    skill.h \
+    post.h \
+    addpost.h
 
 FORMS    += mainwindow.ui \
-    login.ui
+    login.ui \
+    addpost.ui

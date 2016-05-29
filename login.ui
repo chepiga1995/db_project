@@ -41,7 +41,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>ura1995</string>
+    <string>admin</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
@@ -80,7 +80,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>1</string>
+    <string>1230</string>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>

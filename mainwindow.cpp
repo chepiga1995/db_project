@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QSqlQueryModel>
 #include "skill.h"
+#include "addpost.h"
 #include <qDebug>
 
 //-------------constructor----------
@@ -70,12 +71,14 @@ void MainWindow::changeSortFieldVacationType(int i){
 
 void MainWindow::setupConnections(){
     //skill
-    connect(ui->tableViewSkill->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::changeSortFieldSkill);
+    connect(ui->tableViewSkill->horizontalHeader(), &QHeaderView::sectionClicked,
+            this, &MainWindow::changeSortFieldSkill);
     connect(skill, &Skill::changeSkillModel, this, &MainWindow::setSkillModel);
     connect(skill, &Skill::clearNewSkillFields, this, &MainWindow::clearSkillFields);
     connect(skill, &Skill::raiseAddSkillError, this, &MainWindow::showSkillAddError);
     //vacation type
-    connect(ui->tableViewVacationType->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::changeSortFieldVacationType);
+    connect(ui->tableViewVacationType->horizontalHeader(), &QHeaderView::sectionClicked,
+            this, &MainWindow::changeSortFieldVacationType);
     connect(vacation_type, &VacationType::changeVacationTypeModel, this, &MainWindow::setVacationTypeModel);
     connect(vacation_type, &VacationType::clearNewVacationTypeFields, this, &MainWindow::clearVacationTypeFields);
     connect(vacation_type, &VacationType::raiseAddVacationTypeError, this, &MainWindow::showVacationTypeAddError);
@@ -125,4 +128,10 @@ void MainWindow::on_findVacationType_clicked()
 {
     QString name = ui->lineEdit_3->text();
     vacation_type->search(name);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    AddPost *add = new AddPost();
+    add->show();
 }
