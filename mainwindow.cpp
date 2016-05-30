@@ -114,8 +114,6 @@ void MainWindow:: on_findSkill_clicked()
 }
 
 
-
-
 void MainWindow::on_addVacationType_clicked()
 {
     ui->label_8->hide();
@@ -133,5 +131,6 @@ void MainWindow::on_findVacationType_clicked()
 void MainWindow::on_pushButton_clicked()
 {
     AddPost *add = new AddPost();
+    add->setModal(true);
     add->show();
 }
