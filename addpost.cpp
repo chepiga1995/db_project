@@ -1,5 +1,6 @@
 #include "addpost.h"
 #include "ui_addpost.h"
+#include "selectskill.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
@@ -31,7 +32,6 @@ void AddPost::on_addPost_clicked()
         return;
     }
     QSqlQuery query;
-    skills << "1" << "2";
     query.prepare("SELECT create_post(:name, :description, :min_salary, :max_salary,"
                   " :amount, ARRAY[" + skills.join(",") + "])");
     query.bindValue(":name", ui->postName->text());
@@ -52,4 +52,18 @@ void AddPost::executeInsert(QSqlQuery & query){
         int index = message.indexOf("\n");
         QMessageBox::critical(this, "Fields", message.left(index)) ;
      }
+}
+
+void AddPost::on_postChooseSkills_clicked()
+{
+    SelectSkill *select = new SelectSkill(0);
+    select->init(skills);
+    select->setModal(true);
+    connect(select, &SelectSkill::selectSkills, this, &AddPost::receiveSkills);
+    select->show();
+}
+
+void AddPost::receiveSkills(QStringList &ids, QStringList &names){
+    skills = ids;
+    ui->label_14->setText("Вибрані вміння: " + names.join(", "));
 }

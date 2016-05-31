@@ -1,7 +1,7 @@
 #ifndef ADDPOST_H
 #define ADDPOST_H
 #include <QSqlQuery>
-
+#include <QStringList>
 #include <QDialog>
 
 namespace Ui {
@@ -16,10 +16,13 @@ public:
     explicit AddPost(QWidget *parent = 0);
     QStringList skills;
     ~AddPost();
-
+public slots:
+    void receiveSkills(QStringList &, QStringList &);
 private slots:
     void on_addPost_clicked();
 
+
+    void on_postChooseSkills_clicked();
 
 private:
     Ui::AddPost *ui;

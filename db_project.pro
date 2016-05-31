@@ -18,15 +18,18 @@ SOURCES += main.cpp\
     vacation_type.cpp \
     skill.cpp \
     post.cpp \
-    addpost.cpp
+    addpost.cpp \
+    selectskill.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
     vacation_type.h \
     skill.h \
     post.h \
-    addpost.h
+    addpost.h \
+    selectskill.h
 
 FORMS    += mainwindow.ui \
     login.ui \
-    addpost.ui
+    addpost.ui \
+    selectskill.ui
