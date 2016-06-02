@@ -19,6 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void initSkill();
     void initVacationType();
+    void initPost();
     ~MainWindow();
 
 public slots:
@@ -32,6 +33,8 @@ public slots:
     void changeSortFieldVacationType(int);
     void clearVacationTypeFields();
     void showVacationTypeAddError();
+//post
+    void setPostModel(QSqlQueryModel *);
 private slots:
     void on_addSkill_clicked();
 
@@ -41,9 +44,9 @@ private slots:
 
     void on_findVacationType_clicked();
 
-    void on_pushButton_clicked();
-
     void on_addPerson_clicked();
+
+    void on_addPost_clicked();
 
 private:
     Ui::MainWindow *ui;

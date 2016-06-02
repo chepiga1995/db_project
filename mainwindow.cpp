@@ -2,9 +2,11 @@
 #include "ui_mainwindow.h"
 #include <QSqlQueryModel>
 #include "skill.h"
+#include "post.h"
 #include "addpost.h"
 #include "addperson.h"
 #include <qDebug>
+#include <QMetaObject>
 
 //-------------constructor----------
 
@@ -13,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    post = new Post;
     skill = new Skill;
     vacation_type = new VacationType;
     this->setupConnections();
@@ -68,6 +70,12 @@ void MainWindow::changeSortFieldVacationType(int i){
     vacation_type->sort(i, order);
 }
 
+//post
+
+void MainWindow::setPostModel(QSqlQueryModel *model){
+    ui->tableViewPost->setModel(model);
+}
+
 //-------------custom methods----------------------
 
 void MainWindow::setupConnections(){
@@ -83,9 +91,15 @@ void MainWindow::setupConnections(){
     connect(vacation_type, &VacationType::changeVacationTypeModel, this, &MainWindow::setVacationTypeModel);
     connect(vacation_type, &VacationType::clearNewVacationTypeFields, this, &MainWindow::clearVacationTypeFields);
     connect(vacation_type, &VacationType::raiseAddVacationTypeError, this, &MainWindow::showVacationTypeAddError);
-
+    //post
+    connect(post, &Post::changePostModel, this, &MainWindow::setPostModel);
     this->initSkill();
     this->initVacationType();
+    this->initPost();
+}
+
+void MainWindow::initPost(){
+    post->refresh();
 }
 
 void MainWindow::initSkill(){
@@ -129,16 +143,16 @@ void MainWindow::on_findVacationType_clicked()
     vacation_type->search(name);
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_addPerson_clicked()
 {
-    AddPost *add = new AddPost();
+    AddPerson *add = new AddPerson();
     add->setModal(true);
     add->show();
 }
 
-void MainWindow::on_addPerson_clicked()
+void MainWindow::on_addPost_clicked()
 {
-    AddPerson *add = new AddPerson();
+    AddPost *add = new AddPost();
     add->setModal(true);
     add->show();
 }
