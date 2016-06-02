@@ -69,7 +69,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <property name="enabled">
@@ -94,14 +94,19 @@
        <bool>true</bool>
       </property>
      </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <attribute name="title">
-      <string>Додати співробітника</string>
-     </attribute>
+     <widget class="QPushButton" name="addPerson">
+      <property name="geometry">
+       <rect>
+        <x>1032</x>
+        <y>50</y>
+        <width>151</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Наняти людину</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="add_post">
      <attribute name="title">

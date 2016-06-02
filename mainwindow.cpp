@@ -3,6 +3,7 @@
 #include <QSqlQueryModel>
 #include "skill.h"
 #include "addpost.h"
+#include "addperson.h"
 #include <qDebug>
 
 //-------------constructor----------
@@ -131,6 +132,13 @@ void MainWindow::on_findVacationType_clicked()
 void MainWindow::on_pushButton_clicked()
 {
     AddPost *add = new AddPost();
+    add->setModal(true);
+    add->show();
+}
+
+void MainWindow::on_addPerson_clicked()
+{
+    AddPerson *add = new AddPerson();
     add->setModal(true);
     add->show();
 }

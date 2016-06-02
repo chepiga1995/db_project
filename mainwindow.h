@@ -43,6 +43,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_addPerson_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;

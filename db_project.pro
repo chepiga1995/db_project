@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     skill.cpp \
     post.cpp \
     addpost.cpp \
-    selectskill.cpp
+    selectskill.cpp \
+    addperson.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -27,9 +28,11 @@ HEADERS  += mainwindow.h \
     skill.h \
     post.h \
     addpost.h \
-    selectskill.h
+    selectskill.h \
+    addperson.h
 
 FORMS    += mainwindow.ui \
     login.ui \
     addpost.ui \
-    selectskill.ui
+    selectskill.ui \
+    addperson.ui
