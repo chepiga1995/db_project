@@ -233,7 +233,7 @@
     <string>Прізвище:</string>
    </property>
   </widget>
-  <widget class="QDateEdit" name="dateEdit">
+  <widget class="QDateEdit" name="personBirthday">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -367,7 +367,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="personAccessType">
    <property name="geometry">
     <rect>
      <x>30</x>

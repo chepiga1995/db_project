@@ -32,8 +32,12 @@ void AddPost::on_addPost_clicked()
         return;
     }
     QSqlQuery query;
+    QString array_text = "array[]::int[])";
+    if (skills.length() > 0){
+       array_text =  "ARRAY[" + skills.join(",") + "])";
+    }
     query.prepare("SELECT create_post(:name, :description, :min_salary, :max_salary,"
-                  " :amount, ARRAY[" + skills.join(",") + "])");
+                  " :amount, " + array_text);
     query.bindValue(":name", ui->postName->text());
     query.bindValue(":description", ui->postDescription->toPlainText());
     query.bindValue(":min_salary", min_salary);

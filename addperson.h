@@ -1,6 +1,7 @@
 #ifndef ADDPERSON_H
 #define ADDPERSON_H
-
+#include <QSqlQuery>
+#include <QStringList>
 #include <QDialog>
 
 namespace Ui {
@@ -13,10 +14,24 @@ class AddPerson : public QDialog
 
 public:
     explicit AddPerson(QWidget *parent = 0);
+    QStringList skills;
+    QString post;
     ~AddPerson();
+
+public slots:
+    void receiveSkills(QStringList &, QStringList &);
+    void receivePost(QString &, QStringList &);
+
+private slots:
+    void on_addPerson_clicked();
+
+    void on_personChooseSkills_clicked();
+
+    void on_personChoosePost_clicked();
 
 private:
     Ui::AddPerson *ui;
+    void executeInsert(QSqlQuery &);
 };
 
 #endif // ADDPERSON_H
