@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="PostgreSQL" id="Project_1ce4bba4" html="y" template="Default" database="PostgreSQL" >
+	<schema name="public" catalogname="db_project" schemaname="public" >
+		<table name="assigned_tasks" >
+			<column name="assigned_task_id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="person_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="task_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="date_of_assignment" type="date" length="13" decimal="0" jt="91" />
+			<column name="date_finish" type="date" length="13" decimal="0" jt="91" />
+			<column name="finish" type="bool" length="1" decimal="0" jt="-7" />
+			<column name="amount" type="integer" length="10" decimal="0" jt="4" />
+			<column name="description" type="text" length="2147483647" decimal="0" jt="12" />
+			<index name="pk_assigned_tasks" unique="PRIMARY_KEY" >
+				<column name="assigned_task_id" />
+			</index>
+			<fk name="fk_assigned_tasks_tasks" to_schema="public" to_table="tasks" >
+				<fk_column name="task_id" pk="task_id" />
+			</fk>
+			<fk name="fk_assigned_tasks_persons" to_schema="public" to_table="persons" >
+				<fk_column name="person_id" pk="person_id" />
+			</fk>
+		</table>
+		<table name="con_person_skill" >
+			<column name="person_id" type="integer" jt="4" />
+			<column name="skill_id" type="integer" jt="4" />
+			<fk name="fk_con_person_skill_skills" to_schema="public" to_table="skills" delete_action="cascade" >
+				<fk_column name="skill_id" pk="skill_id" />
+			</fk>
+			<fk name="fk_con_person_skill_persons" to_schema="public" to_table="persons" delete_action="cascade" >
+				<fk_column name="person_id" pk="person_id" />
+			</fk>
+		</table>
+		<table name="con_posts_skills" >
+			<column name="skill_id" type="integer" jt="4" />
+			<column name="post_id" type="integer" jt="4" />
+			<fk name="fk_con_posts_skills_skills" to_schema="public" to_table="skills" delete_action="cascade" >
+				<fk_column name="skill_id" pk="skill_id" />
+			</fk>
+			<fk name="fk_con_posts_skills_posts" to_schema="public" to_table="posts" delete_action="cascade" >
+				<fk_column name="post_id" pk="post_id" />
+			</fk>
+		</table>
+		<table name="con_primary_task_skill" >
+			<column name="primary_task_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="skill_id" type="integer" length="10" decimal="0" jt="4" />
+			<index name="idx_con_primary_task_skill" unique="NORMAL" >
+				<column name="primary_task_id" />
+			</index>
+			<fk name="fk_con_primary_task_skill" to_schema="public" to_table="primary_tasks" delete_action="cascade" >
+				<fk_column name="primary_task_id" pk="primary_task_id" />
+			</fk>
+			<fk name="fk_con_primary_task_skills" to_schema="public" to_table="skills" delete_action="cascade" >
+				<fk_column name="skill_id" pk="skill_id" />
+			</fk>
+		</table>
+		<table name="finished_amount_of_tasks" >
+			<column name="sum" type="bigint" length="19" decimal="0" jt="-5" />
+		</table>
+		<table name="persons" >
+			<column name="person_id" type="serial" jt="4" mandatory="y" />
+			<column name="date_in" type="date" jt="91" />
+			<column name="date_out" type="date" jt="91" />
+			<column name="education" type="text" jt="12" />
+			<column name="first_name" type="varchar" length="100" decimal="0" jt="12" />
+			<column name="last_name" type="varchar" length="100" decimal="0" jt="12" />
+			<column name="login" type="varchar" length="100" decimal="0" jt="12" />
+			<column name="birthday" type="date" length="13" decimal="0" jt="91" />
+			<column name="phone_number" type="varchar" length="15" decimal="0" jt="12" />
+			<column name="email" type="varchar" length="100" decimal="0" jt="12" />
+			<column name="skype" type="varchar" length="100" decimal="0" jt="12" />
+			<column name="access_type" type="varchar" length="10" decimal="0" jt="12" />
+			<index name="idx_persons" unique="UNIQUE" >
+				<column name="login" />
+			</index>
+			<index name="pk_persons" unique="PRIMARY_KEY" >
+				<column name="person_id" />
+			</index>
+		</table>
+		<table name="planes" >
+			<column name="plane_id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="technical_status" type="bool" length="1" decimal="0" jt="-7" />
+			<column name="fuel_status" type="bool" length="1" decimal="0" jt="-7" />
+			<column name="available" type="bool" jt="-7" />
+			<column name="name" type="varchar" length="100" decimal="0" jt="12" />
+			<column name="type" type="varchar" length="20" decimal="0" jt="12" />
+			<column name="capacity" type="integer" length="10" decimal="0" jt="4" />
+			<column name="owner" type="varchar" length="100" decimal="0" jt="12" />
+			<index name="pk_planes_2" unique="PRIMARY_KEY" >
+				<column name="plane_id" />
+			</index>
+		</table>
+		<table name="posts" >
+			<column name="post_id" type="serial" jt="4" mandatory="y" />
+			<column name="min_salary" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="max_salary" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="description" type="text" length="2147483647" decimal="0" jt="12" mandatory="y" />
+			<column name="name" type="varchar" length="100" jt="12" />
+			<index name="pk_posts" unique="PRIMARY_KEY" >
+				<column name="post_id" />
+			</index>
+		</table>
+		<table name="primary_tasks" >
+			<column name="primary_task_id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="cost" type="integer" length="10" decimal="0" jt="4" />
+			<column name="description" type="text" length="2147483647" decimal="0" jt="12" />
+			<column name="short_name" type="varchar" length="100" decimal="0" jt="12" />
+			<column name="time_to_complete" type="bigint" length="19" decimal="0" jt="-5" />
+			<index name="pk_primary_tasks_0" unique="PRIMARY_KEY" >
+				<column name="primary_task_id" />
+			</index>
+			<index name="idx_primary_tasks" unique="UNIQUE" >
+				<column name="short_name" />
+			</index>
+		</table>
+		<table name="problems" >
+			<column name="problem_id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="description" type="text" length="2147483647" decimal="0" jt="12" />
+			<column name="date_create" type="date" length="13" decimal="0" jt="91" />
+			<column name="plane_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="creator_person_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="assign_to_person_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="date_update" type="date" length="13" decimal="0" jt="91" />
+			<column name="date_deadline" type="date" length="13" decimal="0" jt="91" />
+			<column name="priority" type="integer" length="10" decimal="0" jt="4" />
+			<column name="short_name" type="varchar" length="100" decimal="0" jt="12" />
+			<column name="solved" type="bool" length="1" decimal="0" jt="-7" />
+			<index name="pk_problems_0" unique="PRIMARY_KEY" >
+				<column name="problem_id" />
+			</index>
+			<index name="idx_problems" unique="UNIQUE" >
+				<column name="short_name" />
+			</index>
+			<fk name="fk_problems_planes" to_schema="public" to_table="planes" >
+				<fk_column name="plane_id" pk="plane_id" />
+			</fk>
+			<fk name="fk_problems_persons" to_schema="public" to_table="persons" >
+				<fk_column name="creator_person_id" pk="person_id" />
+			</fk>
+			<fk name="fk_problems_persons_assign" to_schema="public" to_table="persons" >
+				<fk_column name="assign_to_person_id" pk="person_id" />
+			</fk>
+		</table>
+		<table name="request_person" >
+			<column name="request_person_id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="description" type="text" jt="12" />
+			<column name="date_of_request" type="date" length="13" decimal="0" jt="91" />
+			<column name="date_of_respond" type="date" length="13" decimal="0" jt="91" />
+			<column name="respond" type="text" length="2147483647" decimal="0" jt="12" />
+			<column name="task_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="person_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="canceled" type="bool" length="1" decimal="0" jt="-7" />
+			<index name="pk_request_person" unique="PRIMARY_KEY" >
+				<column name="request_person_id" />
+			</index>
+			<index name="idx_request_person_0" unique="NORMAL" >
+				<column name="person_id" />
+			</index>
+			<fk name="fk_request_person_tasks" to_schema="public" to_table="tasks" >
+				<fk_column name="task_id" pk="task_id" />
+			</fk>
+			<fk name="fk_request_person_persons" to_schema="public" to_table="persons" >
+				<fk_column name="person_id" pk="person_id" />
+			</fk>
+		</table>
+		<table name="skills" >
+			<column name="skill_id" type="serial" jt="4" mandatory="y" />
+			<column name="description" type="text" jt="12" />
+			<column name="name" type="text" length="100" jt="12" />
+			<index name="pk_skills" unique="PRIMARY_KEY" >
+				<column name="skill_id" />
+			</index>
+		</table>
+		<table name="structures" >
+			<column name="structure_id" type="serial" jt="4" mandatory="y" />
+			<column name="post_id" type="integer" jt="4" />
+			<column name="date_in" type="date" jt="91" />
+			<column name="date_out" type="date" jt="91" />
+			<column name="amount" type="integer" jt="4" />
+			<index name="idx_structure" unique="NORMAL" >
+				<column name="post_id" />
+			</index>
+			<index name="pk_structures" unique="PRIMARY_KEY" >
+				<column name="structure_id" />
+			</index>
+			<fk name="fk_structures_posts" to_schema="public" to_table="posts" delete_action="cascade" >
+				<fk_column name="post_id" pk="post_id" />
+			</fk>
+		</table>
+		<table name="stuff" >
+			<column name="date_in" type="date" jt="91" />
+			<column name="data_out" type="date" jt="91" />
+			<column name="post_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="salary" type="integer" length="10" decimal="0" jt="4" />
+			<column name="person_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="stuff_id" type="serial" jt="4" mandatory="y" />
+			<index name="idx_stuff" unique="NORMAL" >
+				<column name="person_id" />
+			</index>
+			<index name="idx_stuff_0" unique="NORMAL" >
+				<column name="post_id" />
+			</index>
+			<index name="pk_stuff" unique="PRIMARY_KEY" >
+				<column name="stuff_id" />
+			</index>
+			<fk name="fk_stuff_posts" to_schema="public" to_table="posts" delete_action="cascade" >
+				<fk_column name="post_id" pk="post_id" />
+			</fk>
+			<fk name="fk_stuff_persons" to_schema="public" to_table="persons" delete_action="cascade" >
+				<fk_column name="person_id" pk="person_id" />
+			</fk>
+		</table>
+		<table name="tasks" >
+			<column name="task_id" type="serial" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="problem_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="primary_task_id" type="integer" length="10" decimal="0" jt="4" />
+			<column name="date_create" type="date" length="13" decimal="0" jt="91" />
+			<column name="date_deadline" type="date" length="13" decimal="0" jt="91" />
+			<column name="priority" type="integer" length="10" decimal="0" jt="4" />
+			<column name="amount_of_primary_task" type="integer" length="10" decimal="0" jt="4" />
+			<index name="pk_tasks_0" unique="PRIMARY_KEY" >
+				<column name="task_id" />
+			</index>
+			<index name="idx_tasks" unique="NORMAL" >
+				<column name="primary_task_id" />
+			</index>
+			<fk name="fk_tasks_primary_tasks" to_schema="public" to_table="primary_tasks" >
+				<fk_column name="primary_task_id" pk="primary_task_id" />
+			</fk>
+			<fk name="fk_tasks_problems" to_schema="public" to_table="problems" >
+				<fk_column name="problem_id" pk="problem_id" />
+			</fk>
+		</table>
+		<table name="vacation_type" >
+			<column name="vacation_type_id" type="serial" jt="4" mandatory="y" />
+			<column name="description" type="text" jt="12" />
+			<column name="name" type="varchar" length="100" decimal="0" jt="12" />
+			<index name="pk_vacation_type" unique="PRIMARY_KEY" >
+				<column name="vacation_type_id" />
+			</index>
+		</table>
+		<table name="vacations" >
+			<column name="vacation_id" type="serial" jt="4" mandatory="y" />
+			<column name="person_id" type="integer" jt="4" />
+			<column name="vacation_type_id" type="integer" jt="4" />
+			<column name="date_in" type="date" jt="91" />
+			<column name="date_out" type="date" jt="91" />
+			<index name="idx_vacation" unique="NORMAL" >
+				<column name="person_id" />
+			</index>
+			<index name="idx_vacations" unique="NORMAL" >
+				<column name="vacation_type_id" />
+			</index>
+			<index name="pk_vacations" unique="PRIMARY_KEY" >
+				<column name="vacation_id" />
+			</index>
+			<fk name="fk_vacations_persons" to_schema="public" to_table="persons" >
+				<fk_column name="person_id" pk="person_id" />
+			</fk>
+			<fk name="fk_vacations_vacation_type" to_schema="public" to_table="vacation_type" delete_action="cascade" >
+				<fk_column name="vacation_type_id" pk="vacation_type_id" />
+			</fk>
+		</table>
+		<view name="complete_posts" >
+			<view_script><![CDATA[SELECT p.name, p.description, p.min_salary, p.max_salary, s.amount, COUNT(st.stuff_id) AS work 
+FROM posts p
+INNER JOIN structures s ON s.post_id=p.post_id
+LEFT JOIN stuff st ON st.post_id=p.post_id
+WHERE s.date_out IS NULL AND st.data_out IS NULL 
+GROUP BY p.name, p.description, p.min_salary, p.max_salary, s.amount;]]></view_script>
+			<column name="name" type="varchar" />
+			<column name="description" type="text" />
+			<column name="min_salary" type="integer" />
+			<column name="max_salary" type="integer" />
+			<column name="amount" type="integer" />
+			<column name="work" type="bigint" />
+		</view>
+		<view name="current_workers" >
+			<view_script><![CDATA[ SELECT persons.first_name,
+    persons.last_name,
+    persons.date_in,
+    persons.date_out,
+    persons.education,
+    persons.login,
+    persons.birthday,
+    persons.email,
+    persons.skype,
+    persons.access_type,
+    persons.person_id,
+    persons.phone_number
+   FROM persons
+  WHERE (((persons.access_type)::text = 'worker'::text) AND (NOT (persons.person_id IN ( SELECT vacations.person_id
+           FROM vacations
+          WHERE ((('now'::text)::date > vacations.date_in) AND (('now'::text)::date < vacations.date_out))))));]]></view_script>
+			<column name="first_name" type="varchar" />
+			<column name="last_name" type="varchar" />
+			<column name="date_in" type="date" />
+			<column name="date_out" type="date" />
+			<column name="education" type="text" />
+			<column name="login" type="varchar" />
+			<column name="birthday" type="date" />
+			<column name="email" type="varchar" />
+			<column name="skype" type="varchar" />
+			<column name="access_type" type="varchar" />
+			<column name="person_id" type="integer" />
+			<column name="phone_number" type="varchar" />
+		</view>
+		<sequence name="assigned_tasks_assigned_task_id_seq" start="1" />
+		<sequence name="persons_person_id_seq" start="1" />
+		<sequence name="planes_plane_id_seq" start="1" />
+		<sequence name="posts_post_id_seq" start="1" />
+		<sequence name="primary_tasks_primary_task_id_seq" start="1" />
+		<sequence name="problems_problem_id_seq" start="1" />
+		<sequence name="request_person_request_person_id_seq" start="1" />
+		<sequence name="skills_skill_id_seq" start="1" />
+		<sequence name="structures_structure_id_seq" start="1" />
+		<sequence name="stuff_stuff_id_seq" start="1" />
+		<sequence name="tasks_task_id_seq" start="1" />
+		<sequence name="vacation_type_vacation_type_id_seq" start="1" />
+		<sequence name="vacations_vacation_id_seq" start="1" />
+		<trigger name="check_inertion_assigned_tasks" id="Trigger_32d7d441" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER check_inertion_assigned_tasks BEFORE INSERT ON assigned_tasks FOR EACH ROW EXECUTE PROCEDURE check_insertion_assigned_tasks()]]></string>
+		</trigger>
+		<trigger name="check_persons" id="Trigger_161cf219" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER check_persons BEFORE INSERT ON persons FOR EACH ROW EXECUTE PROCEDURE check_persons_insert()]]></string>
+		</trigger>
+		<trigger name="check_posts" id="Trigger_1c1fbb4c" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER check_posts BEFORE INSERT ON posts FOR EACH ROW EXECUTE PROCEDURE check_posts_insert()]]></string>
+		</trigger>
+		<trigger name="check_skills" id="Trigger_6e36edb" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER check_skills BEFORE INSERT ON skills FOR EACH ROW EXECUTE PROCEDURE check_skills_insert()]]></string>
+		</trigger>
+		<trigger name="check_structures" id="Trigger_1d8b0b99" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER check_structures BEFORE INSERT ON structures FOR EACH ROW EXECUTE PROCEDURE check_structures_insert()]]></string>
+		</trigger>
+		<trigger name="check_stuff" id="Trigger_28719875" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER check_stuff BEFORE INSERT ON stuff FOR EACH ROW EXECUTE PROCEDURE check_stuff_insert()]]></string>
+		</trigger>
+		<trigger name="insert_check_primary_task" id="Trigger_18fedcb2" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER insert_check_primary_task BEFORE INSERT ON primary_tasks FOR EACH ROW EXECUTE PROCEDURE check_insertion_primary_tasks()]]></string>
+		</trigger>
+		<trigger name="update_check_primary_task" id="Trigger_32fff4cf" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER update_check_primary_task BEFORE UPDATE ON primary_tasks FOR EACH ROW EXECUTE PROCEDURE check_insertion_primary_tasks()]]></string>
+		</trigger>
+		<function name="check_insertion_assigned_tasks" id="Function_33275faa" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_insertion_assigned_tasks()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+begin
+NEW.finish:= false;
+NEW.date_finish = null;
+NEW.date_of_assignment = now();
+IF NEW.amount <= 0 OR NOT EXISTS(select * from persons where person_id = NEW.person_id)
+OR NOT EXISTS(select * from tasks where task_id = NEW.task_id) THEN
+return null;
+END IF;
+return NEW;
+end;
+$function$
+]]></string>
+		</function>
+		<function name="check_insertion_primary_tasks" id="Function_2b418231" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_insertion_primary_tasks()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$                                                    
+ BEGIN                                                            
+  IF NEW.cost > 0 AND char_length(NEW.description) > 0 AND NEW.time_to_complete is not null AND char_length(NEW.short_name) > 0 THEN                        
+  RETURN NEW;                                                     
+  END IF;                                                         
+  RETURN null;                                                    
+ END;                                                             
+ $function$
+]]></string>
+		</function>
+		<function name="check_persons_insert" id="Function_302e54ec" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_persons_insert()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+ IF char_length(NEW.first_name) = 0 OR char_length(NEW.last_name) = 0 THEN
+    RAISE EXCEPTION 'Поля "Імя" і "Прізвище" мають бути не пустими.';
+ END IF;
+ IF char_length(NEW.login) = 0 THEN
+      RAISE EXCEPTION 'Поле "Login" має бути не пустим.';
+ END IF;
+ IF not NEW.access_type in ('hr', 'worker', 'manager') THEN
+     RAISE EXCEPTION 'Не коректне значення виду доступу';
+ END IF;
+ IF not regexp_matches(NEW.phone_number, '/d*') THEN
+    RAISE EXCEPTION 'Не коректний номер телефону';
+ END IF;
+ RETURN NEW;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="check_posts_insert" id="Function_195a2b6" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_posts_insert()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+ IF char_length(NEW.description) = 0 OR char_length(NEW.name) = 0 THEN
+    RAISE EXCEPTION 'Поля "Назва" і "Опис" мають бути не пустими.';
+ END IF;
+ IF NEW.min_salary < 1 OR  NEW.max_salary < 1 THEN
+      RAISE EXCEPTION 'Максимальна та мінімальна зарплата має бути додатньою';
+  END IF;
+ IF NEW.min_salary > NEW.max_salary THEN
+     RAISE EXCEPTION 'Максимальна зарплата має бути більшою за мінімальну';
+ END IF;
+ RETURN NEW;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="check_skills_insert" id="Function_3910c000" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_skills_insert()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+ IF NEW.skill_id > 0 AND char_length(NEW.description) > 0 AND char_length(NEW.name) > 0 THEN
+    RETURN NEW;
+ END IF;
+    RETURN null;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="check_structures_insert" id="Function_1782a941" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_structures_insert()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+ IF NEW.amount < 1 THEN
+     RAISE EXCEPTION 'Кількість місць має бути додатньою';
+ END IF;
+ RETURN NEW;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="check_stuff_insert" id="Function_3465b941" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_stuff_insert()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+    post posts;
+    am_of_stuff int;
+    am_of_stuct int;
+BEGIN
+    SELECT * INTO post FROM posts WHERE posts.post_id = NEW.post_id;
+    IF not NEW.salary BETWEEN post.min_salary AND post.max_salary THEN
+        RAISE EXCEPTION 'Зарплата має бути в діапазоні від % до % .', post.min_salary, post.max_salary;
+    END IF;
+    SELECT count(s.stuff_id) INTO am_of_stuff FROM stuff as s WHERE s.post_id = NEW.post_id and s.data_out is NULL;
+    SELECT amount INTO am_of_stuct FROM structures as s WHERE s.post_id = NEW.post_id and s.date_out is NULL;
+    IF am_of_stuff >= am_of_stuct THEN
+        RAISE EXCEPTION 'Немає вільних місць на посаду % .', post.name;
+    END IF;
+ RETURN NEW;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="create_person" id="Function_16ec0195" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.create_person(_first_name character varying, _last_name character varying, _education text, _salary integer, _login character varying, _email character varying, _skype character varying, _phone character varying, _access_type character varying, _birthday date, _post_id integer, skill_ids integer[])
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  id int;
+  s_id int;
+  skill_id int;
+  temp_skill skills;
+  temp_post posts;
+BEGIN
+    -- validation
+    FOREACH s_id IN ARRAY skill_ids
+    LOOP
+    BEGIN
+        SELECT * INTO STRICT temp_skill FROM skills WHERE skills.skill_id = s_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Вміння % не знайдено', s_id; 
+    END;
+    END LOOP; 
+    BEGIN
+        SELECT * INTO STRICT temp_post FROM posts WHERE posts.post_id = _post_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Посада % не знайдена', _post_id; 
+    END;
+    -- insert
+    BEGIN
+    INSERT INTO persons(first_name, last_name, education, login, email, skype, phone_number, access_type, birthday, date_in) 
+        VALUES(_first_name, _last_name, _education, _login, _email, _skype, _phone, _access_type, _birthday, now()) RETURNING person_id INTO id;
+    EXCEPTION
+        WHEN unique_violation THEN 
+            RAISE EXCEPTION 'Login % вже зайнятий', _login;  
+    END;        
+    INSERT INTO stuff(post_id, person_id, date_in, salary) 
+        VALUES(_post_id, id, now(), _salary);  
+    FOREACH skill_id IN ARRAY skill_ids
+    LOOP
+        INSERT INTO con_person_skill(skill_id, person_id) 
+            VALUES(skill_id, id); 
+    END LOOP;                    
+    RETURN id;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="create_post" id="Function_333903cb" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.create_post(_name character varying, _description text, _min_salary integer, _max_salary integer, _amount integer, skill_ids integer[])
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  id int;
+  s_id int;
+  skill_id int;
+  rec skills;
+BEGIN
+    -- validation
+    FOREACH s_id IN ARRAY skill_ids
+    LOOP
+    BEGIN
+        SELECT * INTO STRICT rec FROM skills WHERE skills.skill_id = s_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Вміння % не знайдено', s_id; 
+    END;
+    END LOOP; 
+    -- insert
+    INSERT INTO posts(name, description, max_salary, min_salary) 
+        VALUES(_name, _description, _max_salary, _min_salary) RETURNING post_id INTO id;
+    INSERT INTO structures(post_id, date_in, amount) 
+        VALUES(id, now(), _amount);  
+    FOREACH skill_id IN ARRAY skill_ids
+    LOOP
+        INSERT INTO con_posts_skills(skill_id, post_id) 
+            VALUES(skill_id, id); 
+    END LOOP;   
+    RETURN id;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="get_project_progress" id="Function_ad871fb" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.get_project_progress(project_id integer)
+ RETURNS double precision
+ LANGUAGE plpgsql
+AS $function$
+ declare
+task RECORD;
+acc_finished_tasks float := 0.0;
+acc_amount_of_tasks float := 0.0;
+finished_amount_of_tasks integer := 0;
+amount_of_tasks integer := 0;
+ begin
+for task IN select * from tasks where problem_id = project_id
+LOOP
+select sum(amount) into finished_amount_of_tasks
+from assigned_tasks where task_id = task.task_id AND finish = true;
+select amount_of_primary_task into amount_of_tasks
+from tasks where task_id = task.task_id;
+IF finished_amount_of_tasks is NULL THEN
+  finished_amount_of_tasks := 0;
+END IF;
+acc_amount_of_tasks := acc_amount_of_tasks + amount_of_tasks;
+acc_finished_tasks := acc_finished_tasks + finished_amount_of_tasks;
+END LOOP;
+IF acc_amount_of_tasks = 0 THEN
+return 0;
+END IF;
+return (acc_finished_tasks::float / acc_amount_of_tasks::float);
+ end
+$function$
+]]></string>
+		</function>
+		<function name="get_task_progress" id="Function_243185f6" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.get_task_progress(id_of_task integer)
+ RETURNS double precision
+ LANGUAGE plpgsql
+AS $function$
+ declare
+ finished_amount_of_tasks integer := 0;
+amount_of_tasks integer := 0;
+ begin
+  select sum(amount) into finished_amount_of_tasks
+from assigned_tasks where task_id = id_of_task AND finish = true;
+select amount_of_primary_task into amount_of_tasks
+from tasks where task_id = id_of_task;
+IF amount_of_tasks = 0 OR finished_amount_of_tasks is NULL THEN
+return 0.0;
+END IF;
+return finished_amount_of_tasks::float / amount_of_tasks::float;
+ end
+$function$
+]]></string>
+		</function>
+		<function name="get_time_to_finish_project" id="Function_24f39ab6" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.get_time_to_finish_project(project_id integer)
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
+ declare
+task RECORD;
+acc_time bigint := 0;
+ begin
+for task IN select * from tasks where problem_id = project_id
+LOOP
+acc_time := acc_time + get_time_to_finish_task(task.task_id); 
+END LOOP; 
+return acc_time;
+ end
+$function$
+]]></string>
+		</function>
+		<function name="get_time_to_finish_task" id="Function_3539db2" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.get_time_to_finish_task(id_of_task integer)
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
+declare
+time bigint := 0;
+time_to_finish bigint := 0;
+finished_amount_of_task integer := 0; 
+amount_of_task integer:=0;
+primary_id integer := 0;
+begin 
+select amount_of_primary_task into amount_of_task
+from tasks where task_id = id_of_task;
+select sum(amount) into finished_amount_of_task 
+from assigned_tasks where task_id = id_of_task AND (finish = true);  
+IF finished_amount_of_task IS NULL then
+finished_amount_of_task := 0;
+END IF;
+select primary_task_id into primary_id 
+from tasks where task_id = id_of_task;
+select time_to_complete into time
+from primary_tasks where primary_task_id = primary_id;
+time_to_finish = time * (amount_of_task - finished_amount_of_task);
+IF time_to_finish IS NULL then
+return 0;
+END IF;
+return time_to_finish; 
+end
+$function$
+]]></string>
+		</function>
+		<function name="getprojectworkers" id="Function_22d45ad8" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.getprojectworkers(project_id integer)
+ RETURNS TABLE(first_name character varying, last_name character varying, number_of_tasks bigint)
+ LANGUAGE plpgsql
+AS $function$
+ begin
+  return QUERY select cw.first_name as name, cw.last_name as surname,
+  count(at.task_id) as number_of_tasks
+  from current_workers as cw
+  join assigned_tasks as at on cw.person_id = at.person_id
+  where (at.date_finish is null OR at.finish = true) AND
+  cw.person_id IN (select person_id from assigned_tasks 
+  where task_id IN (select task_id from tasks where problem_id = project_id))
+  group by name, surname
+  order by number_of_tasks desc, name asc;
+ end
+$function$
+]]></string>
+		</function>
+		<function name="gettaskprogress" id="Function_1d16b850" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.gettaskprogress(id_of_task integer)
+ RETURNS real
+ LANGUAGE plpgsql
+AS $function$
+ declare
+ finished_amount_of_tasks integer := 0;
+amount_of_tasks integer := 0;
+ begin
+  select sum(amount) into finished_amount_of_tasks
+from assigned_tasks where task_id = id_of_task AND finish = true;
+select amount_of_primary_task into amount_of_tasks
+from tasks where task_id = id_of_task;
+IF amount_of_tasks = 0 OR finished_amount_of_tasks is NULL THEN
+return 0.0;
+END IF;
+return finished_amount_of_tasks::real / amount_of_tasks::real;
+ end
+$function$
+]]></string>
+		</function>
+		<function name="sum_arr" id="Function_3255155e" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.sum_arr(integer[])
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  s int8 := 0;
+  x int;
+BEGIN
+  RAISE EXCEPTION 'Nonexistent ID --> %', s
+      USING HINT = 'Please check your user ID';
+  FOREACH x IN ARRAY $1
+  LOOP
+    s := s + x;
+  END LOOP;
+  RETURN s;
+END;
+$function$
+]]></string>
+		</function>
+	</schema>
+	<connector name="PostgreSQL" database="PostgreSQL" driver_class="org.postgresql.Driver" driver_jar="postgresql-9.4-1203.jdbc41.jar" host="52.31.46.192" port="5432" instance="db_project" user="admin" passwd="MTIzMA==" />
+	<layout id="Layout_20898833" name="Default" show_relation_columns="y" >
+		<entity schema="public" name="request_person" color="b7c8e3" x="825" y="705" />
+		<entity schema="public" name="planes" color="b7c8e3" x="210" y="870" />
+		<entity schema="public" name="tasks" color="b7c8e3" x="510" y="795" />
+		<entity schema="public" name="primary_tasks" color="b7c8e3" x="585" y="495" />
+		<entity schema="public" name="skills" color="b7c8e3" x="465" y="510" />
+		<entity schema="public" name="con_primary_task_skill" color="b7c8e3" x="390" y="630" />
+		<entity schema="public" name="vacation_type" color="b7c8e3" x="795" y="420" />
+		<entity schema="public" name="problems" color="b7c8e3" x="135" y="615" />
+		<entity schema="public" name="assigned_tasks" color="b7c8e3" x="840" y="510" />
+		<entity schema="public" name="vacations" color="b7c8e3" x="810" y="195" />
+		<entity schema="public" name="con_person_skill" color="b7c8e3" x="240" y="510" />
+		<entity schema="public" name="current_workers" color="b7c8e3" x="705" y="870" />
+		<entity schema="public" name="posts" color="bfd4f5" x="375" y="255" />
+		<entity schema="public" name="finished_amount_of_tasks" color="b7c8e3" x="45" y="135" />
+		<entity schema="public" name="structures" color="b7c8e3" x="525" y="375" />
+		<entity schema="public" name="con_posts_skills" color="b7c8e3" x="345" y="405" />
+		<entity schema="public" name="stuff" color="bfd4f5" x="630" y="225" />
+		<entity schema="public" name="persons" color="b7c8e3" x="90" y="270" />
+		<entity schema="public" name="complete_posts" color="b7c8e3" x="825" y="45" />
+		<script name="skills_002" id="Query_3a1cb8e" language="SQL" >
+			<string><![CDATA[INSERT INTO skills
+	( skill_id, description) VALUES ( 1, 'her' );
+
+]]></string>
+		</script>
+		<browser id="Browse_22dd93be" name="complete_posts" >
+			<browse_table schema="public" entity="complete_posts" x="10" y="10" width="429" height="330" />
+		</browser>
+		<browser id="Browse_355b5c81" name="complete_posts_001" >
+			<browse_table schema="public" entity="complete_posts" x="10" y="10" width="429" height="330" />
+		</browser>
+		<browser id="Browse_2335da94" name="current_workers" >
+			<browse_table schema="public" entity="current_workers" x="10" y="10" width="200" height="200" />
+		</browser>
+		<browser id="Browse_312bd10e" name="current_workers_001" >
+			<browse_table schema="public" entity="current_workers" x="10" y="10" width="200" height="200" />
+		</browser>
+		<browser id="Browse_173033ec" name="current_workers_002" >
+			<browse_table schema="public" entity="current_workers" x="10" y="10" width="429" height="330" />
+		</browser>
+		<browser id="Browse_1f5ad3b7" name="post" >
+			<browse_table schema="public" entity="posts" x="10" y="10" width="200" height="200" />
+		</browser>
+		<browser id="Browse_6f951d1" name="skills" >
+			<browse_table schema="public" entity="skills" x="10" y="10" width="200" height="200" />
+		</browser>
+		<browser id="Browse_2d1a9318" name="skills_001" >
+			<browse_table schema="public" entity="skills" x="10" y="10" width="289" height="223" />
+		</browser>
+	</layout>
+	<layout id="Layout_847e71c" name="Default With Groups" show_relation_columns="y" >
+		<entity schema="public" name="posts" color="bfd4f5" x="45" y="165" />
+		<entity schema="public" name="stuff" color="bfd4f5" x="195" y="165" />
+		<callout x="45" y="45" pointer="NO" />
+		<group name="post" color="f0f3f7" >
+			<entity schema="public" name="posts" />
+			<entity schema="public" name="stuff" />
+		</group>
+	</layout>
+</project>

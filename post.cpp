@@ -12,7 +12,7 @@ Post::~Post()
 QSqlQueryModel * Post::getPostModel(){
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query;
-    query.prepare("SELECT * FROM posts");
+    query.prepare("SELECT * FROM complete_posts");
     query.exec();
 
     model->setQuery(query);
