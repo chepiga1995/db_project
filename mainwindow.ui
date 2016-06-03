@@ -150,7 +150,7 @@
        <bool>false</bool>
       </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>150</number>
+       <number>128</number>
       </attribute>
       <attribute name="horizontalHeaderMinimumSectionSize">
        <number>25</number>
@@ -165,7 +165,7 @@
        <number>50</number>
       </attribute>
      </widget>
-     <widget class="QGroupBox" name="groupSearch">
+     <widget class="QGroupBox" name="groupPostSearch">
       <property name="geometry">
        <rect>
         <x>960</x>
@@ -180,7 +180,7 @@
       <widget class="QPushButton" name="postSearch">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>70</x>
          <y>100</y>
          <width>113</width>
          <height>32</height>
@@ -214,7 +214,10 @@
        </property>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupManage">
+     <widget class="QGroupBox" name="groupPostManage">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>960</x>
@@ -252,7 +255,7 @@
       <widget class="QPushButton" name="postApplyNewAmount">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>50</x>
          <y>120</y>
          <width>161</width>
          <height>32</height>
@@ -265,7 +268,7 @@
       <widget class="QPushButton" name="postClose">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>50</x>
          <y>190</y>
          <width>161</width>
          <height>32</height>

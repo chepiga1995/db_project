@@ -34,6 +34,9 @@ public slots:
     void clearVacationTypeFields();
     void showVacationTypeAddError();
 //post
+    void postSelectedChanged(const QItemSelection &, const QItemSelection &);
+    void refreshPostPage();
+    void changeSortFieldPost(int);
     void setPostModel(QSqlQueryModel *);
 private slots:
     void on_addSkill_clicked();
@@ -47,6 +50,8 @@ private slots:
     void on_addPerson_clicked();
 
     void on_addPost_clicked();
+
+    void on_postSearch_clicked();
 
 private:
     Ui::MainWindow *ui;

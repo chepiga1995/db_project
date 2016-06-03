@@ -76,6 +76,19 @@ void MainWindow::setPostModel(QSqlQueryModel *model){
     ui->tableViewPost->setModel(model);
 }
 
+void MainWindow::refreshPostPage(){
+    post->refresh();
+    connect(ui->tableViewPost->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::postSelectedChanged);
+    ui->groupPostManage->setEnabled(false);
+    ui->postNewAmount->setText("");
+}
+
+void MainWindow::changeSortFieldPost(int i){
+    int order = ui->tableViewPost->horizontalHeader()->sortIndicatorOrder();
+    post->sort(i, order);
+}
+
 //-------------custom methods----------------------
 
 void MainWindow::setupConnections(){
@@ -92,14 +105,18 @@ void MainWindow::setupConnections(){
     connect(vacation_type, &VacationType::clearNewVacationTypeFields, this, &MainWindow::clearVacationTypeFields);
     connect(vacation_type, &VacationType::raiseAddVacationTypeError, this, &MainWindow::showVacationTypeAddError);
     //post
+    connect(ui->tableViewPost->horizontalHeader(), &QHeaderView::sectionClicked,
+            this, &MainWindow::changeSortFieldPost);
     connect(post, &Post::changePostModel, this, &MainWindow::setPostModel);
+    connect(post, &Post::refreshPostPage, this, &MainWindow::refreshPostPage);
     this->initSkill();
     this->initVacationType();
     this->initPost();
 }
 
 void MainWindow::initPost(){
-    post->refresh();
+    emit refreshPostPage();
+    ui->postNewAmount->setValidator( new QIntValidator(1, 100, this) );
 }
 
 void MainWindow::initSkill(){
@@ -155,4 +172,29 @@ void MainWindow::on_addPost_clicked()
     AddPost *add = new AddPost();
     add->setModal(true);
     add->show();
+}
+
+void MainWindow::postSelectedChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    QList<QModelIndex> row = selected.indexes();
+    if(row.length()){
+        ui->groupPostManage->setEnabled(true);
+        post->selected_id = row[0].data().toString();
+        ui->postNewAmount->setText(row[5].data().toString());
+        if(row[6].data().toString() == "0"){
+            ui->postClose->setEnabled(true);
+        } else {
+            ui->postClose->setEnabled(false);
+        }
+    } else {
+        ui->postNewAmount->setText("");
+        ui->groupPostManage->setEnabled(false);
+    }
+
+}
+
+void MainWindow::on_postSearch_clicked()
+{
+    QString name = ui->postNameSearch->text();
+    post->search(name);
 }
