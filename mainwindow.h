@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include "skill.h"
+#include "person.h"
 #include "vacation_type.h"
 #include "post.h"
 
@@ -20,6 +21,7 @@ public:
     void initSkill();
     void initVacationType();
     void initPost();
+    void initPerson();
     ~MainWindow();
 
 public slots:
@@ -38,6 +40,11 @@ public slots:
     void refreshPostPage();
     void changeSortFieldPost(int);
     void setPostModel(QSqlQueryModel *);
+//person
+    void personSelectedChanged(const QItemSelection &, const QItemSelection &);
+    void refreshPersonPage();
+    void changeSortFieldPerson(int);
+    void setPersonModel(QSqlQueryModel *);
 private slots:
     void on_addSkill_clicked();
 
@@ -57,10 +64,13 @@ private slots:
 
     void on_postClose_clicked();
 
+    void on_personGenerateReport_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;
     Post *post;
+    Person *person;
     VacationType *vacation_type;
     void setupConnections();
 

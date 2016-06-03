@@ -3,10 +3,13 @@
 #include <QSqlQueryModel>
 #include "skill.h"
 #include "post.h"
+#include "person.h"
 #include "addpost.h"
 #include "addperson.h"
 #include <qDebug>
 #include <QMessageBox>
+#include "QtPrintSupport/QPrinter"
+#include <QtPrintSupport/QPrintDialog>
 
 //-------------constructor----------
 
@@ -17,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     post = new Post;
     skill = new Skill;
+    person = new Person;
     vacation_type = new VacationType;
     this->setupConnections();
 }
@@ -89,6 +93,24 @@ void MainWindow::changeSortFieldPost(int i){
     post->sort(i, order);
 }
 
+//person
+
+void MainWindow::setPersonModel(QSqlQueryModel *model){
+    ui->tableViewPerson->setModel(model);
+}
+
+void MainWindow::refreshPersonPage(){
+    person->refresh();
+    connect(ui->tableViewPerson->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::personSelectedChanged);
+    ui->groupPersonManage->setEnabled(false);
+}
+
+void MainWindow::changeSortFieldPerson(int i){
+    int order = ui->tableViewPerson->horizontalHeader()->sortIndicatorOrder();
+    person->sort(i, order);
+}
+
 //-------------custom methods----------------------
 
 void MainWindow::setupConnections(){
@@ -109,14 +131,24 @@ void MainWindow::setupConnections(){
             this, &MainWindow::changeSortFieldPost);
     connect(post, &Post::changePostModel, this, &MainWindow::setPostModel);
     connect(post, &Post::refreshPostPage, this, &MainWindow::refreshPostPage);
+    //person
+    connect(ui->tableViewPerson->horizontalHeader(), &QHeaderView::sectionClicked,
+            this, &MainWindow::changeSortFieldPerson);
+    connect(person, &Person::changePersonModel, this, &MainWindow::setPersonModel);
+    connect(person, &Person::refreshPersonPage, this, &MainWindow::refreshPersonPage);
     this->initSkill();
     this->initVacationType();
     this->initPost();
+    this->initPerson();
 }
 
 void MainWindow::initPost(){
     emit refreshPostPage();
     ui->postNewAmount->setValidator( new QIntValidator(1, 100, this) );
+}
+
+void MainWindow::initPerson(){
+    emit refreshPersonPage();
 }
 
 void MainWindow::initSkill(){
@@ -194,6 +226,18 @@ void MainWindow::postSelectedChanged(const QItemSelection &selected, const QItem
 
 }
 
+void MainWindow::personSelectedChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    QList<QModelIndex> row = selected.indexes();
+    if(row.length()){
+        ui->groupPersonManage->setEnabled(true);
+        post->selected_id = row[0].data().toString();
+    } else {
+        ui->groupPostManage->setEnabled(false);
+    }
+
+}
+
 void MainWindow::on_postSearch_clicked()
 {
     QString name = ui->postNameSearch->text();
@@ -213,4 +257,71 @@ void MainWindow::on_postApplyNewAmount_clicked()
 void MainWindow::on_postClose_clicked()
 {
     post->closePost(this);
+}
+
+
+
+void MainWindow::on_personGenerateReport_clicked()
+{
+
+    QString strStream;
+    QTextStream out(&strStream);
+
+
+
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+    QSqlQuery query;
+    query.prepare("SELECT * FROM complete_posts");
+    query.exec();
+
+    model->setQuery(query);
+    model->setHeaderData(0, Qt::Horizontal, tr("Id"));
+    model->setHeaderData(1, Qt::Horizontal, tr("Назва"));
+    model->setHeaderData(2, Qt::Horizontal, tr("Опис"));
+    model->setHeaderData(3, Qt::Horizontal, tr("Мін. зарплата"));
+    model->setHeaderData(4, Qt::Horizontal, tr("Мак. зарплата"));
+    model->setHeaderData(5, Qt::Horizontal, tr("Кількість місць"));
+    model->setHeaderData(6, Qt::Horizontal, tr("Занято місць"));
+
+    int rowCount = model->rowCount();
+    int columnCount = model->columnCount();
+
+    out << "<html>\n" << "<head>\n" << "<meta Content=\"Text/html; charset=utf-8\">\n" <<
+           QString("<title>%1</title>\n").arg("Report") <<
+           "</head>\n"
+           "<body bgcolor = #ffffff link=#5000A0>\n" <<
+           "<table border = 1 cellspacing=0 cellpadding=2>\n";
+
+    out<<"<thead><tr bgcolo=#f0f0f0>";
+    for( int column = 0; column < columnCount; column++)
+        out << QString("<th>%1</th>").arg(model->headerData(column,Qt::Horizontal).toString());
+    out << "</tr></thead>\n";
+
+    for (int row = 0; row < rowCount; row++ ) {
+        out << "<tr>";
+        for ( int column = 0; column < columnCount; column++){
+            QString data = model->data(model->index(row,column)).toString().simplified();
+            out << QString("<td bkcolor=0>%1</td>").arg((!data.isEmpty()) ? data : QString("&nbsp;"));
+        }
+        out << "</tr>\n";
+    }
+    out << "</table>\n""</body>\n""</html>\n";
+
+    QTextDocument *document = new QTextDocument();
+    document->setHtml(strStream);
+    qDebug() << strStream << endl;
+    QPrinter printer;
+    QString file_name = QDir::currentPath();
+
+    file_name = file_name + "/report.pdf";
+
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(file_name);
+    QPrintDialog *dialog = new QPrintDialog(&printer, this);
+    if (dialog->exec() == QDialog::Accepted) {
+        document->print(&printer);
+    }
+    delete document;
+
 }

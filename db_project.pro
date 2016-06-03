@@ -5,6 +5,7 @@
 #-------------------------------------------------
 QT       += sql
 QT       += core gui
+QT       += printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,7 +22,8 @@ SOURCES += main.cpp\
     addpost.cpp \
     selectskill.cpp \
     addperson.cpp \
-    selectpost.cpp
+    selectpost.cpp \
+    person.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -31,7 +33,8 @@ HEADERS  += mainwindow.h \
     addpost.h \
     selectskill.h \
     addperson.h \
-    selectpost.h
+    selectpost.h \
+    person.h
 
 FORMS    += mainwindow.ui \
     login.ui \
