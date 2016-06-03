@@ -8,7 +8,7 @@
 Post::Post()
 {
     searchName = "";
-    sortField = "name";
+    sortField = "post_id";
     sortOrder = "DESC";
 }
 

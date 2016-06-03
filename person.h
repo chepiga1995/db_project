@@ -10,6 +10,7 @@ class Person: public QObject {
 public:
     ~Person();
     Person();
+    QSqlQueryModel * model;
     void refresh();
     QString selected_id;
     void search(QString &, QString &);

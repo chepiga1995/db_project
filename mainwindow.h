@@ -66,6 +66,8 @@ private slots:
 
     void on_personGenerateReport_clicked();
 
+    void on_personSearch_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;

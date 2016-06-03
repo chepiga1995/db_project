@@ -263,34 +263,17 @@ void MainWindow::on_postClose_clicked()
 
 void MainWindow::on_personGenerateReport_clicked()
 {
-
     QString strStream;
     QTextStream out(&strStream);
 
-
-
-
-    QSqlQueryModel *model = new QSqlQueryModel();
-    QSqlQuery query;
-    query.prepare("SELECT * FROM complete_posts");
-    query.exec();
-
-    model->setQuery(query);
-    model->setHeaderData(0, Qt::Horizontal, tr("Id"));
-    model->setHeaderData(1, Qt::Horizontal, tr("Назва"));
-    model->setHeaderData(2, Qt::Horizontal, tr("Опис"));
-    model->setHeaderData(3, Qt::Horizontal, tr("Мін. зарплата"));
-    model->setHeaderData(4, Qt::Horizontal, tr("Мак. зарплата"));
-    model->setHeaderData(5, Qt::Horizontal, tr("Кількість місць"));
-    model->setHeaderData(6, Qt::Horizontal, tr("Занято місць"));
+    QSqlQueryModel *model = person->model;
 
     int rowCount = model->rowCount();
     int columnCount = model->columnCount();
 
     out << "<html>\n" << "<head>\n" << "<meta Content=\"Text/html; charset=utf-8\">\n" <<
-           QString("<title>%1</title>\n").arg("Report") <<
-           "</head>\n"
-           "<body bgcolor = #ffffff link=#5000A0>\n" <<
+           "<title>Report</title>\n" <<
+           "</head>\n <body bgcolor = #ffffff link=#5000A0>\n" <<
            "<table border = 1 cellspacing=0 cellpadding=2>\n";
 
     out<<"<thead><tr bgcolo=#f0f0f0>";
@@ -310,18 +293,18 @@ void MainWindow::on_personGenerateReport_clicked()
 
     QTextDocument *document = new QTextDocument();
     document->setHtml(strStream);
-    qDebug() << strStream << endl;
-    QPrinter printer;
-    QString file_name = QDir::currentPath();
 
-    file_name = file_name + "/report.pdf";
-
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(file_name);
+    QPrinter printer(QPrinter::HighResolution);
     QPrintDialog *dialog = new QPrintDialog(&printer, this);
     if (dialog->exec() == QDialog::Accepted) {
         document->print(&printer);
     }
-    delete document;
 
+}
+
+void MainWindow::on_personSearch_clicked()
+{
+    QString name = ui->personNameSearch->text();
+    QString last_name = ui->personLastNameSearch->text();
+    person->search(name, last_name);
 }

@@ -5,7 +5,7 @@
 #-------------------------------------------------
 QT       += sql
 QT       += core gui
-QT       += printsupport
+qtHaveModule(printsupport): QT += printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
