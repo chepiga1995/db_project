@@ -13,6 +13,8 @@ public:
     QString selected_id;
     void search(QString &);
     void sort(int, int);
+    void changeAmount(QString &, QWidget *);
+    void closePost(QWidget *);
 signals:
     void changePostModel(QSqlQueryModel *);
     void refreshPostPage();

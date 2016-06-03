@@ -18,6 +18,8 @@ public:
     ~AddPost();
 public slots:
     void receiveSkills(QStringList &, QStringList &);
+signals:
+    void postAdded();
 private slots:
     void on_addPost_clicked();
 

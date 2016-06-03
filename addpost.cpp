@@ -48,14 +48,15 @@ void AddPost::on_addPost_clicked()
 
 void AddPost::executeInsert(QSqlQuery & query){
     query.exec();
-     if(query.isActive()) {
-         QMessageBox::information(this, "Fields", "Посада додана!!!") ;
+    if(query.isActive()) {
+        QMessageBox::information(this, "Fields", "Посада додана!!!") ;
         this->hide();
-     } else {
+        emit postAdded();
+    } else {
         QString message = (query.lastError()).databaseText();
         int index = message.indexOf("\n");
         QMessageBox::critical(this, "Fields", message.left(index)) ;
-     }
+    }
 }
 
 void AddPost::on_postChooseSkills_clicked()

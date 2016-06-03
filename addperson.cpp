@@ -51,14 +51,14 @@ void AddPerson::on_addPerson_clicked()
 
 void AddPerson::executeInsert(QSqlQuery & query){
     query.exec();
-     if(query.isActive()) {
-         QMessageBox::information(this, "Fields", "Працівник доданий!!!") ;
+    if(query.isActive()) {
+        QMessageBox::information(this, "Fields", "Працівник доданий!!!") ;
         this->hide();
-     } else {
+    } else {
         QString message = (query.lastError()).databaseText();
         int index = message.indexOf("\n");
         QMessageBox::critical(this, "Fields", message.left(index)) ;
-     }
+    }
 }
 
 void AddPerson::on_personChooseSkills_clicked()

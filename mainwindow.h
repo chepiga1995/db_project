@@ -53,6 +53,10 @@ private slots:
 
     void on_postSearch_clicked();
 
+    void on_postApplyNewAmount_clicked();
+
+    void on_postClose_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;

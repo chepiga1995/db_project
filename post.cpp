@@ -2,6 +2,8 @@
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <qDebug>
+#include <QMessageBox>
+#include <QSqlError>
 
 Post::Post()
 {
@@ -50,4 +52,35 @@ void Post::sort(int field, int order){
     sortField = fieldIndex[field];
     sortOrder = sortIndex[order];
     emit refreshPostPage();
+}
+
+void Post::changeAmount(QString &amount, QWidget *ui){
+    QSqlQuery query;
+    query.prepare("SELECT update_post(:amount, :post_id)");
+    query.bindValue(":amount", amount);
+    query.bindValue(":post_id", selected_id);
+    query.exec();
+    if(query.isActive()) {
+        QMessageBox::information(ui, "Fields", "Кількість змінена");
+        emit refreshPostPage();
+    } else {
+        QString message = (query.lastError()).databaseText();
+        int index = message.indexOf("\n");
+        QMessageBox::critical(ui, "Fields", message.left(index)) ;
+    }
+}
+
+void Post::closePost(QWidget *ui){
+    QSqlQuery query;
+    query.prepare("SELECT close_post(:post_id)");
+    query.bindValue(":post_id", selected_id);
+    query.exec();
+    if(query.isActive()) {
+        QMessageBox::information(ui, "Fields", "Посада закрита");
+        emit refreshPostPage();
+    } else {
+        QString message = (query.lastError()).databaseText();
+        int index = message.indexOf("\n");
+        QMessageBox::critical(ui, "Fields", message.left(index)) ;
+    }
 }

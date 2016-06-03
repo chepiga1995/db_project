@@ -6,7 +6,7 @@
 #include "addpost.h"
 #include "addperson.h"
 #include <qDebug>
-#include <QMetaObject>
+#include <QMessageBox>
 
 //-------------constructor----------
 
@@ -171,6 +171,7 @@ void MainWindow::on_addPost_clicked()
 {
     AddPost *add = new AddPost();
     add->setModal(true);
+    connect(add, &AddPost::postAdded, this, &MainWindow::refreshPostPage);
     add->show();
 }
 
@@ -197,4 +198,19 @@ void MainWindow::on_postSearch_clicked()
 {
     QString name = ui->postNameSearch->text();
     post->search(name);
+}
+
+void MainWindow::on_postApplyNewAmount_clicked()
+{
+    QString amount = ui->postNewAmount->text();
+    if(!amount.length()){
+        QMessageBox::critical(this, "Fields", "Заповніть поле кількості!!!") ;
+        return;
+    }
+    post->changeAmount(amount, this);
+}
+
+void MainWindow::on_postClose_clicked()
+{
+    post->closePost(this);
 }
