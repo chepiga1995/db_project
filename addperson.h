@@ -29,6 +29,9 @@ private slots:
 
     void on_personChoosePost_clicked();
 
+    void on_closePost_clicked();
+signals:
+    void personAdded();
 private:
     Ui::AddPerson *ui;
     void executeInsert(QSqlQuery &);

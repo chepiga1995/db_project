@@ -72,3 +72,8 @@ void AddPost::receiveSkills(QStringList &ids, QStringList &names){
     skills = ids;
     ui->label_14->setText("Вибрані вміння: " + names.join(", "));
 }
+
+void AddPost::on_postClose_clicked()
+{
+    this->close();
+}

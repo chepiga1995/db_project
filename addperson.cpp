@@ -24,7 +24,7 @@ AddPerson::~AddPerson()
 void AddPerson::on_addPerson_clicked()
 {
     QString salary = ui->personSalary->text();
-    if(salary.length() == 0){
+    if(salary.length() == 0 || post.length() == 0){
         QMessageBox::critical(this, "Fields", "Заповніть всі поля!!!") ;
         return;
     }
@@ -54,6 +54,7 @@ void AddPerson::executeInsert(QSqlQuery & query){
     if(query.isActive()) {
         QMessageBox::information(this, "Fields", "Працівник доданий!!!") ;
         this->hide();
+        emit personAdded();
     } else {
         QString message = (query.lastError()).databaseText();
         int index = message.indexOf("\n");
@@ -89,4 +90,9 @@ void AddPerson::receivePost(QString &id, QStringList &data){
     ui->label_17->setText("Посада: " + data[0]);
     ui->label_18->setText("Мінімальна зарплата: " + data[1]);
     ui->label_19->setText("Максимальна зарплата: " + data[2]);
+}
+
+void AddPerson::on_closePost_clicked()
+{
+    this->close();
 }

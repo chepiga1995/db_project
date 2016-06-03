@@ -152,7 +152,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="clearPostField">
+  <widget class="QPushButton" name="closePost">
    <property name="geometry">
     <rect>
      <x>340</x>
@@ -162,7 +162,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Очистити</string>
+    <string>Відмінити</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_15">

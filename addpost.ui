@@ -169,7 +169,7 @@
     <string>Зберегти</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="clearPostField">
+  <widget class="QPushButton" name="postClose">
    <property name="geometry">
     <rect>
      <x>330</x>
@@ -179,7 +179,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Очистити</string>
+    <string>Відмінити</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_14">

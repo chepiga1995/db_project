@@ -196,6 +196,7 @@ void MainWindow::on_addPerson_clicked()
 {
     AddPerson *add = new AddPerson();
     add->setModal(true);
+    connect(add, &AddPerson::personAdded, this, &MainWindow::refreshPersonPage);
     add->show();
 }
 
@@ -232,6 +233,18 @@ void MainWindow::personSelectedChanged(const QItemSelection &selected, const QIt
     if(row.length()){
         ui->groupPersonManage->setEnabled(true);
         post->selected_id = row[0].data().toString();
+        if(row[6].data().toString() == "--"){
+            ui->personFired->setEnabled(false);
+        } else {
+            ui->personFired->setEnabled(true);
+        }
+        if(row[7].data().toString() == "true"){
+            ui->personStartVacation->setEnabled(false);
+            ui->personEndVacation->setEnabled(true);
+        } else {
+            ui->personStartVacation->setEnabled(true);
+            ui->personEndVacation->setEnabled(false);
+        }
     } else {
         ui->groupPostManage->setEnabled(false);
     }

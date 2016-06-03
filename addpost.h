@@ -26,6 +26,8 @@ private slots:
 
     void on_postChooseSkills_clicked();
 
+    void on_postClose_clicked();
+
 private:
     Ui::AddPost *ui;
     void executeInsert(QSqlQuery &);
