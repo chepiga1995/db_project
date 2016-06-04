@@ -74,3 +74,18 @@ void Person::personFired(QWidget * ui){
     }
 }
 
+void Person::endVacation(QWidget * ui){
+    QSqlQuery query;
+    query.prepare("SELECT close_vacation(:person_id)");
+    query.bindValue(":person_id", selected_id);
+    query.exec();
+    if(query.isActive()) {
+        QMessageBox::information(ui, "Fields", "Відпустка закінчилась!!!");
+        emit refreshPersonPage();
+    } else {
+        QString message = (query.lastError()).databaseText();
+        int index = message.indexOf("\n");
+        QMessageBox::critical(ui, "Fields", message.left(index)) ;
+    }
+}
+

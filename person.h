@@ -16,6 +16,7 @@ public:
     void search(QString &, QString &);
     void sort(int, int);
     void personFired(QWidget *);
+    void endVacation(QWidget *);
 signals:
     void changePersonModel(QSqlQueryModel *);
     void refreshPersonPage();

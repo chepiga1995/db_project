@@ -76,6 +76,8 @@ private slots:
 
     void on_personStartVacation_clicked();
 
+    void on_personEndVacation_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;

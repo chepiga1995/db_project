@@ -244,7 +244,7 @@ void MainWindow::personSelectedChanged(const QItemSelection &selected, const QIt
             ui->personEndVacation->setEnabled(false);
         }
     } else {
-        ui->groupPostManage->setEnabled(false);
+        ui->groupPersonManage->setEnabled(false);
     }
 
 }
@@ -346,4 +346,9 @@ void MainWindow::on_personStartVacation_clicked()
     add->setModal(true);
     connect(add, &AddVacation::vacationAdded, this, &MainWindow::refreshPersonPage);
     add->show();
+}
+
+void MainWindow::on_personEndVacation_clicked()
+{
+    person->endVacation(this);
 }
