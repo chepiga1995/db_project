@@ -234,11 +234,6 @@ void MainWindow::personSelectedChanged(const QItemSelection &selected, const QIt
     if(row.length()){
         ui->groupPersonManage->setEnabled(true);
         person->selected_id = row[0].data().toString();
-        if(row[6].data().toString() == "--"){
-            ui->personFired->setEnabled(false);
-        } else {
-            ui->personFired->setEnabled(true);
-        }
         if(row[7].data().toString() == "true"){
             ui->personStartVacation->setEnabled(false);
             ui->personEndVacation->setEnabled(true);
@@ -329,4 +324,9 @@ void MainWindow::on_personChangePost_clicked()
     add->setModal(true);
     connect(add, &ChangePerson::personAdded, this, &MainWindow::refreshPersonPage);
     add->show();
+}
+
+void MainWindow::on_personFired_clicked()
+{
+    person->personFired(this);
 }

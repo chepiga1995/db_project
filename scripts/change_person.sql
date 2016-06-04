@@ -6,6 +6,7 @@ DECLARE
   stuff_id int;
   temp_post posts;
   temp_pers persons;
+  temp_stuff stuff;
 BEGIN
     -- validation
     BEGIN
@@ -19,6 +20,12 @@ BEGIN
         EXCEPTION 
             WHEN NO_DATA_FOUND THEN 
                 RAISE EXCEPTION 'Людина % не знайдена', _person_id; 
+    END;
+    BEGIN
+        SELECT * INTO STRICT temp_stuff FROM stuff WHERE stuff.person_id = _person_id and stuff.data_out is NULL;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Людина % не працює', _person_id; 
     END;
     -- update
     UPDATE stuff SET data_out=now() WHERE data_out is NULL and person_id = _person_id;

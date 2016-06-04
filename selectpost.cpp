@@ -14,7 +14,7 @@ SelectPost::SelectPost(QWidget *parent) :
     ui->setupUi(this);
     model = new QSqlQueryModel();
     QSqlQuery query;
-    query.prepare("SELECT post_id, name, min_salary, max_salary FROM posts");
+    query.prepare("SELECT post_id, name, min_salary, max_salary FROM complete_posts");
     query.exec();
 
     model->setQuery(query);

@@ -15,6 +15,7 @@ public:
     QString selected_id;
     void search(QString &, QString &);
     void sort(int, int);
+    void personFired(QWidget *);
 signals:
     void changePersonModel(QSqlQueryModel *);
     void refreshPersonPage();

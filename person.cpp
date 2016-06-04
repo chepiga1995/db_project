@@ -59,4 +59,18 @@ void Person::sort(int field, int order){
     emit refreshPersonPage();
 }
 
+void Person::personFired(QWidget * ui){
+    QSqlQuery query;
+    query.prepare("SELECT close_person(:person_id)");
+    query.bindValue(":person_id", selected_id);
+    query.exec();
+    if(query.isActive()) {
+        QMessageBox::information(ui, "Fields", "Працівник звільнений!!!");
+        emit refreshPersonPage();
+    } else {
+        QString message = (query.lastError()).databaseText();
+        int index = message.indexOf("\n");
+        QMessageBox::critical(ui, "Fields", message.left(index)) ;
+    }
+}
 

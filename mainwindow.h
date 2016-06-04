@@ -70,6 +70,8 @@ private slots:
 
     void on_personChangePost_clicked();
 
+    void on_personFired_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;

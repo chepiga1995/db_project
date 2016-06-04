@@ -1,8 +1,5 @@
-SELECT p.person_id, p.first_name, p.last_name, p.login, p.access_type, p.birthday, 
-CASE WHEN s.stuff_id IS NULL  
-	THEN '--'
-    ELSE po.name
-END AS is_work,
+SELECT  p.person_id, p.first_name, p.last_name, p.login, p.access_type, p.birthday, 
+po.name AS is_work,
 NOT (v.vacation_id IS null) AS is_vacation 
 	FROM persons p
 	LEFT JOIN vacations v ON v.person_id=p.person_id
