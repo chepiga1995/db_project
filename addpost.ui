@@ -48,7 +48,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Опис посади:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Опис посади&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="amountOfpalces">
@@ -84,7 +84,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Назва посади:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Назва посади&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="postName">
@@ -107,7 +107,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Максимальна зарплата:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимальна зарплата&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="postDescription">
@@ -130,7 +130,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Мінімальна зарплата:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Мінімальна зарплата&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="postMinSalary">
@@ -214,7 +214,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Кількість вільних місць:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Кількість вільних місць&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

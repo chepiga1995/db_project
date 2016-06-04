@@ -123,7 +123,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Ім&quot;я:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ім&amp;quot;я&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_12">
@@ -136,7 +136,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Login:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Login&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="personLogin">
@@ -175,7 +175,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Телефон:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Телефон&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_14">
@@ -230,7 +230,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Прізвище:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Прізвище&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QDateEdit" name="personBirthday">
@@ -259,7 +259,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Дата народження:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дата народження&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_17">
@@ -307,7 +307,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Зарплата:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Зарплата&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="personSalary">
@@ -442,7 +442,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Вид доступу:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вид доступу&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>
