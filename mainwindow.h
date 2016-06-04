@@ -72,6 +72,8 @@ private slots:
 
     void on_personFired_clicked();
 
+    void on_personUpdate_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;

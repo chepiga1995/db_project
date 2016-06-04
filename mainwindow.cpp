@@ -7,6 +7,7 @@
 #include "addpost.h"
 #include "addperson.h"
 #include "changeperson.h"
+#include "updateperson.h"
 #include <qDebug>
 #include <QMessageBox>
 #include "QtPrintSupport/QPrinter"
@@ -320,13 +321,20 @@ void MainWindow::on_personSearch_clicked()
 
 void MainWindow::on_personChangePost_clicked()
 {
-    ChangePerson *add = new ChangePerson(0, person->selected_id);
-    add->setModal(true);
-    connect(add, &ChangePerson::personAdded, this, &MainWindow::refreshPersonPage);
-    add->show();
+    ChangePerson *change = new ChangePerson(0, person->selected_id);
+    change->setModal(true);
+    connect(change, &ChangePerson::personAdded, this, &MainWindow::refreshPersonPage);
+    change->show();
 }
 
 void MainWindow::on_personFired_clicked()
 {
     person->personFired(this);
+}
+
+void MainWindow::on_personUpdate_clicked()
+{
+    UpdatePerson *add = new UpdatePerson(0, person->selected_id);
+    add->setModal(true);
+    add->show();
 }
