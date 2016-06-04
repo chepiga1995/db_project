@@ -68,6 +68,8 @@ private slots:
 
     void on_personSearch_clicked();
 
+    void on_personChangePost_clicked();
+
 private:
     Ui::MainWindow *ui;
     Skill *skill;

@@ -6,6 +6,7 @@
 #include "person.h"
 #include "addpost.h"
 #include "addperson.h"
+#include "changeperson.h"
 #include <qDebug>
 #include <QMessageBox>
 #include "QtPrintSupport/QPrinter"
@@ -232,7 +233,7 @@ void MainWindow::personSelectedChanged(const QItemSelection &selected, const QIt
     QList<QModelIndex> row = selected.indexes();
     if(row.length()){
         ui->groupPersonManage->setEnabled(true);
-        post->selected_id = row[0].data().toString();
+        person->selected_id = row[0].data().toString();
         if(row[6].data().toString() == "--"){
             ui->personFired->setEnabled(false);
         } else {
@@ -320,4 +321,12 @@ void MainWindow::on_personSearch_clicked()
     QString name = ui->personNameSearch->text();
     QString last_name = ui->personLastNameSearch->text();
     person->search(name, last_name);
+}
+
+void MainWindow::on_personChangePost_clicked()
+{
+    ChangePerson *add = new ChangePerson(0, person->selected_id);
+    add->setModal(true);
+    connect(add, &ChangePerson::personAdded, this, &MainWindow::refreshPersonPage);
+    add->show();
 }
