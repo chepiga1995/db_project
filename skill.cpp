@@ -1,7 +1,9 @@
 #include "skill.h"
 #include <QSqlQueryModel>
 #include <QSqlQuery>
-#include <qDebug>
+#include <QSqlError>
+#include <QDebug>
+#include <QMessageBox>
 
 //--------------constructor----------------
 
@@ -38,19 +40,22 @@ void Skill::refresh(){
     emit changeSkillModel(model);
 }
 
-void Skill::addSkill(QString & name, QString & description){
+void Skill::addSkill(QString & name, QString & description, QWidget* ui){
     QSqlQuery query;
     query.prepare("INSERT INTO skills (name, description) "
                   "VALUES (:name, :description)");
     query.bindValue(":name", name);
     query.bindValue(":description", description);
-    query.exec();
 
-    if (query.numRowsAffected()) {
+    query.exec();
+    if(query.isActive()) {
+        QMessageBox::information(ui, "Fields", "Вміння додано!!!") ;
         refresh();
         emit clearNewSkillFields();
     } else {
-        emit raiseAddSkillError();
+        QString message = (query.lastError()).databaseText();
+        int index = message.indexOf("\n");
+        QMessageBox::critical(ui, "Fields", message.left(index)) ;
     }
 }
 
@@ -66,4 +71,3 @@ void Skill::sort(int field, int order){
     sortOrder = sortIndex[order];
     refresh();
 }
-

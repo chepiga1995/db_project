@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.check_skills_insert()
+CREATE OR REPLACE FUNCTION public.check_vacation_type_insert()
  RETURNS trigger
  LANGUAGE plpgsql
 AS $function$

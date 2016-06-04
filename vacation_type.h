@@ -12,11 +12,10 @@ public:
     void refresh();
     void search(QString &);
     void sort(int, int);
-    void addVacationType(QString &, QString &);
+    void addVacationType(QString &, QString &, QWidget *);
 signals:
     void changeVacationTypeModel(QSqlQueryModel *);
     void clearNewVacationTypeFields();
-    void raiseAddVacationTypeError();
 private:
     QSqlQueryModel * getVacationTypeModel();
     QString searchName;

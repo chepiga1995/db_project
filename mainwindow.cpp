@@ -57,9 +57,6 @@ void MainWindow::clearSkillFields(){
     ui->textEdit->clear();
 }
 
-void MainWindow::showSkillAddError(){
-    ui->label_4->show();
-}
 
 void MainWindow::changeSortFieldSkill(int i){
     int order = ui->tableViewSkill->horizontalHeader()->sortIndicatorOrder();
@@ -77,9 +74,6 @@ void MainWindow::clearVacationTypeFields(){
     ui->textEdit_2->clear();
 }
 
-void MainWindow::showVacationTypeAddError(){
-    ui->label_8->show();
-}
 
 void MainWindow::changeSortFieldVacationType(int i){
     int order = ui->tableViewVacationType->horizontalHeader()->sortIndicatorOrder();
@@ -131,13 +125,11 @@ void MainWindow::setupConnections(){
             this, &MainWindow::changeSortFieldSkill);
     connect(skill, &Skill::changeSkillModel, this, &MainWindow::setSkillModel);
     connect(skill, &Skill::clearNewSkillFields, this, &MainWindow::clearSkillFields);
-    connect(skill, &Skill::raiseAddSkillError, this, &MainWindow::showSkillAddError);
     //vacation type
     connect(ui->tableViewVacationType->horizontalHeader(), &QHeaderView::sectionClicked,
             this, &MainWindow::changeSortFieldVacationType);
     connect(vacation_type, &VacationType::changeVacationTypeModel, this, &MainWindow::setVacationTypeModel);
     connect(vacation_type, &VacationType::clearNewVacationTypeFields, this, &MainWindow::clearVacationTypeFields);
-    connect(vacation_type, &VacationType::raiseAddVacationTypeError, this, &MainWindow::showVacationTypeAddError);
     //post
     connect(ui->tableViewPost->horizontalHeader(), &QHeaderView::sectionClicked,
             this, &MainWindow::changeSortFieldPost);
@@ -165,22 +157,19 @@ void MainWindow::initPerson(){
 
 void MainWindow::initSkill(){
     skill->refresh();
-    ui->label_4->hide();
 }
 
 void MainWindow::initVacationType(){
     vacation_type->refresh();
-    ui->label_8->hide();
 }
 
 
 
 void MainWindow::on_addSkill_clicked()
 {
-    ui->label_4->hide();
     QString name = ui->lineEdit_2->text();
     QString description = ui->textEdit->toPlainText();
-    skill->addSkill(name, description);
+    skill->addSkill(name, description, this);
 }
 
 void MainWindow:: on_findSkill_clicked()
@@ -192,10 +181,9 @@ void MainWindow:: on_findSkill_clicked()
 
 void MainWindow::on_addVacationType_clicked()
 {
-    ui->label_8->hide();
     QString name = ui->lineEdit_4->text();
     QString description = ui->textEdit_2->toPlainText();
-    vacation_type->addVacationType(name, description);
+    vacation_type->addVacationType(name, description, this);
 }
 
 void MainWindow::on_findVacationType_clicked()

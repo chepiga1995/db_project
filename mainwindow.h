@@ -29,12 +29,10 @@ public slots:
     void setSkillModel(QSqlQueryModel *);
     void changeSortFieldSkill(int);
     void clearSkillFields();
-    void showSkillAddError();
 //vacation type
     void setVacationTypeModel(QSqlQueryModel *);
     void changeSortFieldVacationType(int);
     void clearVacationTypeFields();
-    void showVacationTypeAddError();
 //post
     void postSelectedChanged(const QItemSelection &, const QItemSelection &);
     void refreshPostPage();

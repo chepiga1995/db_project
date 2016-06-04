@@ -2,7 +2,9 @@
 
 #include <QSqlQueryModel>
 #include <QSqlQuery>
-#include <qDebug>
+#include <QSqlError>
+#include <QDebug>
+#include <QMessageBox>
 
 //--------------constructor----------------
 
@@ -39,7 +41,7 @@ void VacationType::refresh(){
     emit changeVacationTypeModel(model);
 }
 
-void VacationType::addVacationType(QString & name, QString & description){
+void VacationType::addVacationType(QString & name, QString & description, QWidget* ui){
     QSqlQuery query;
     query.prepare("INSERT INTO vacation_type (name, description) "
                   "VALUES (:name, :description)");
@@ -47,13 +49,17 @@ void VacationType::addVacationType(QString & name, QString & description){
     query.bindValue(":description", description);
     query.exec();
 
-    if (query.numRowsAffected()) {
+    if(query.isActive()) {
+        QMessageBox::information(ui, "Fields", "Тип відпустки доданий!!!") ;
         refresh();
         emit clearNewVacationTypeFields();
     } else {
-        emit raiseAddVacationTypeError();
+        QString message = (query.lastError()).databaseText();
+        int index = message.indexOf("\n");
+        QMessageBox::critical(ui, "Fields", message.left(index)) ;
     }
 }
+
 
 void VacationType::search(QString & name){
     searchName = name;
@@ -67,3 +73,4 @@ void VacationType::sort(int field, int order){
     sortOrder = sortIndex[order];
     refresh();
 }
+

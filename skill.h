@@ -12,11 +12,10 @@ public:
     void refresh();
     void search(QString &);
     void sort(int, int);
-    void addSkill(QString &, QString &);
+    void addSkill(QString &, QString &, QWidget *);
 signals:
     void changeSkillModel(QSqlQueryModel *);
     void clearNewSkillFields();
-    void raiseAddSkillError();
 private:
     QSqlQueryModel * getSkillModel();
     QString searchName;
