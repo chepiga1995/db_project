@@ -15,7 +15,7 @@ BEGIN
                 RAISE EXCEPTION 'Людина % не знайдена', _person_id; 
     END;
     SELECT COUNT(vacation_id) INTO vac_ammount FROM vacations WHERE vacations.person_id = _person_id AND vacations.date_out IS NULL;
-    IF vac_ammount = 0 THEN
+    IF vac_ammount == 0 THEN
         RAISE EXCEPTION 'Людина не на відпустці';
     END IF;
     -- update

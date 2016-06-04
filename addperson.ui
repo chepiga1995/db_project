@@ -397,6 +397,11 @@
      <string>manager</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>ceo</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLineEdit" name="personskype">
    <property name="geometry">

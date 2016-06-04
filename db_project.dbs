@@ -260,13 +260,38 @@
 				<fk_column name="vacation_type_id" pk="vacation_type_id" />
 			</fk>
 		</table>
+		<view name="complete_person" >
+			<view_script><![CDATA[SELECT  p.person_id, p.first_name, p.last_name, p.login, p.access_type, p.birthday, 
+po.name AS is_work,
+NOT (v.vacation_id IS null) AS is_vacation 
+	FROM persons p
+	LEFT JOIN vacations v ON v.person_id=p.person_id AND v.date_out IS NULL
+	LEFT JOIN stuff s ON s.person_id=p.person_id
+	LEFT JOIN posts po ON po.post_id=s.post_id
+	WHERE s.data_out IS NULL;]]></view_script>
+			<column name="person_id" type="integer" />
+			<column name="first_name" type="varchar" />
+			<column name="last_name" type="varchar" />
+			<column name="login" type="varchar" />
+			<column name="access_type" type="varchar" />
+			<column name="birthday" type="date" />
+			<column name="is_work" type="varchar" />
+			<column name="is_vacation" type="bool" />
+		</view>
 		<view name="complete_posts" >
-			<view_script><![CDATA[SELECT p.name, p.description, p.min_salary, p.max_salary, s.amount, COUNT(st.stuff_id) AS work 
-FROM posts p
-INNER JOIN structures s ON s.post_id=p.post_id
-LEFT JOIN stuff st ON st.post_id=p.post_id
-WHERE s.date_out IS NULL AND st.data_out IS NULL 
-GROUP BY p.name, p.description, p.min_salary, p.max_salary, s.amount;]]></view_script>
+			<view_script><![CDATA[ SELECT p.post_id,
+    p.name,
+    p.description,
+    p.min_salary,
+    p.max_salary,
+    s.amount,
+    count(st.stuff_id) AS work
+   FROM ((posts p
+     JOIN structures s ON ((s.post_id = p.post_id)))
+     LEFT JOIN stuff st ON ((st.post_id = p.post_id)))
+  WHERE ((s.date_out IS NULL) AND (st.data_out IS NULL))
+  GROUP BY p.post_id, p.name, p.description, p.min_salary, p.max_salary, s.amount;]]></view_script>
+			<column name="post_id" type="integer" />
 			<column name="name" type="varchar" />
 			<column name="description" type="text" />
 			<column name="min_salary" type="integer" />
@@ -323,6 +348,9 @@ GROUP BY p.name, p.description, p.min_salary, p.max_salary, s.amount;]]></view_s
 		<trigger name="check_persons" id="Trigger_161cf219" isSystem="false" >
 			<string><![CDATA[CREATE TRIGGER check_persons BEFORE INSERT ON persons FOR EACH ROW EXECUTE PROCEDURE check_persons_insert()]]></string>
 		</trigger>
+		<trigger name="check_persons_update" id="Trigger_153ad3ee" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER check_persons_update BEFORE UPDATE ON persons FOR EACH ROW EXECUTE PROCEDURE check_persons_insert()]]></string>
+		</trigger>
 		<trigger name="check_posts" id="Trigger_1c1fbb4c" isSystem="false" >
 			<string><![CDATA[CREATE TRIGGER check_posts BEFORE INSERT ON posts FOR EACH ROW EXECUTE PROCEDURE check_posts_insert()]]></string>
 		</trigger>
@@ -341,6 +369,38 @@ GROUP BY p.name, p.description, p.min_salary, p.max_salary, s.amount;]]></view_s
 		<trigger name="update_check_primary_task" id="Trigger_32fff4cf" isSystem="false" >
 			<string><![CDATA[CREATE TRIGGER update_check_primary_task BEFORE UPDATE ON primary_tasks FOR EACH ROW EXECUTE PROCEDURE check_insertion_primary_tasks()]]></string>
 		</trigger>
+		<function name="change_person" id="Function_31ea99" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.change_person(_salary integer, _post_id integer, _person_id integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  stuff_id int;
+  temp_post posts;
+  temp_pers persons;
+BEGIN
+    -- validation
+    BEGIN
+        SELECT * INTO STRICT temp_post FROM posts WHERE posts.post_id = _post_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Посада % не знайдена', _post_id; 
+    END;
+    BEGIN
+        SELECT * INTO STRICT temp_pers FROM persons WHERE persons.person_id = _person_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Людина % не знайдена', _person_id; 
+    END;
+    -- update
+    UPDATE stuff SET data_out=now() WHERE data_out is NULL and person_id = _person_id;
+    INSERT INTO stuff(post_id, person_id, date_in, salary) 
+            VALUES(_post_id, _person_id, now(), _salary);  
+    RETURN stuff_id;
+END;
+$function$
+]]></string>
+		</function>
 		<function name="check_insertion_assigned_tasks" id="Function_33275faa" isSystem="false" >
 			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_insertion_assigned_tasks()
  RETURNS trigger
@@ -388,7 +448,21 @@ BEGIN
  IF not NEW.access_type in ('hr', 'worker', 'manager') THEN
      RAISE EXCEPTION 'Не коректне значення виду доступу';
  END IF;
- IF not regexp_matches(NEW.phone_number, '/d*') THEN
+ IF not NEW.phone_number ~ '^\([0-9]{2}\)-[0-9]{2}-[0-9]{2}-[0-9]{3}$' THEN
+    RAISE EXCEPTION 'Не коректний номер телефону';
+ END IF;
+ RETURN NEW;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="check_persons_update" id="Function_585fe6b" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.check_persons_update()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+ IF not NEW.phone_number ~ '^\([0-9]{2}\)-[0-9]{2}-[0-9]{2}-[0-9]{3}$' THEN
     RAISE EXCEPTION 'Не коректний номер телефону';
  END IF;
  RETURN NEW;
@@ -464,6 +538,99 @@ BEGIN
         RAISE EXCEPTION 'Немає вільних місць на посаду % .', post.name;
     END IF;
  RETURN NEW;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="close_person" id="Function_2cbd21c9" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.close_person(_person_id integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  stuff_id int;
+  temp_st stuff;
+  temp_pers persons;
+BEGIN
+    -- validation
+    BEGIN
+        SELECT * INTO STRICT temp_pers FROM persons WHERE persons.person_id = _person_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Людина % не знайдена', _person_id; 
+    END;
+    BEGIN
+        SELECT * INTO STRICT temp_st FROM stuff WHERE stuff.person_id = _person_id AND stuff.data_out IS NULL ;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Людина % не працює', _person_id; 
+    END;
+    -- update
+    UPDATE stuff SET data_out=now() WHERE data_out is NULL and person_id = _person_id; 
+    RETURN stuff_id;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="close_post" id="Function_346e5171" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.close_post(_post_id integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  am_of_stuff int;
+  struct_id int;
+  temp_post posts;
+  temp_struc structures;
+BEGIN
+    -- validation
+    BEGIN
+        SELECT * INTO STRICT temp_post FROM posts WHERE posts.post_id = _post_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Посада % не знайдена', _post_id; 
+    END;
+    BEGIN
+        SELECT * INTO STRICT temp_struc FROM structures WHERE structures.post_id = _post_id and structures.date_out is NULL;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Посада % не активна', _post_id; 
+    END;
+    SELECT count(s.stuff_id) INTO am_of_stuff FROM stuff as s WHERE s.post_id = _post_id and s.data_out is NULL;
+    IF am_of_stuff != 0 THEN
+        RAISE EXCEPTION 'На посаді працюють люди';
+    END IF;
+    -- update
+    UPDATE structures SET date_out=now() WHERE date_out is NULL and post_id=_post_id;
+    RETURN am_of_stuff;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="close_vacation" id="Function_b606250" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.close_vacation(_person_id integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  vac_ammount int;
+  temp_vac vacation_type;
+  temp_pers persons;
+BEGIN
+    -- validation
+    BEGIN
+        SELECT * INTO STRICT temp_pers FROM persons WHERE persons.person_id = _person_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Людина % не знайдена', _person_id; 
+    END;
+    SELECT COUNT(vacation_id) INTO vac_ammount FROM vacations WHERE vacations.person_id = _person_id AND vacations.date_out IS NULL;
+    IF vac_ammount = 0 THEN
+        RAISE EXCEPTION 'Людина не на відпустці';
+    END IF;
+    -- update
+    UPDATE vacations SET date_out=now() WHERE date_out is NULL and person_id=_person_id; 
+    RETURN vac_ammount;
 END;
 $function$
 ]]></string>
@@ -548,6 +715,41 @@ BEGIN
             VALUES(skill_id, id); 
     END LOOP;   
     RETURN id;
+END;
+$function$
+]]></string>
+		</function>
+		<function name="create_vacation" id="Function_2e6ac22" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.create_vacation(_vacation_type_id integer, _person_id integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  vac_ammount int;
+  temp_vac vacation_type;
+  temp_pers persons;
+BEGIN
+    -- validation
+    BEGIN
+        SELECT * INTO STRICT temp_pers FROM persons WHERE persons.person_id = _person_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Людина % не знайдена', _person_id; 
+    END;
+    BEGIN
+        SELECT * INTO STRICT temp_vac FROM vacation_type WHERE vacation_type.vacation_type_id = _vacation_type_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Тип відпустки % не знайдений', _vacation_type_id; 
+    END;
+    SELECT COUNT(vacation_id) INTO vac_ammount FROM vacations WHERE vacations.person_id = _person_id AND vacations.date_out IS NULL;
+    IF vac_ammount > 0 THEN
+        RAISE EXCEPTION 'Людина вже працює';
+    END IF;
+    -- update
+    INSERT INTO vacations(vacation_type_id, person_id, date_in) 
+            VALUES(_vacation_type_id, _person_id, now());  
+    RETURN vac_ammount;
 END;
 $function$
 ]]></string>
@@ -715,48 +917,77 @@ END;
 $function$
 ]]></string>
 		</function>
+		<function name="update_post" id="Function_27a6aaa4" isSystem="false" >
+			<string><![CDATA[CREATE OR REPLACE FUNCTION public.update_post(_amount integer, _post_id integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  am_of_stuff int;
+  struct_id int;
+  temp_post posts;
+  temp_struc structures;
+BEGIN
+    -- validation
+    BEGIN
+        SELECT * INTO STRICT temp_post FROM posts WHERE posts.post_id = _post_id;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Посада % не знайдена', _post_id; 
+    END;
+    BEGIN
+        SELECT * INTO STRICT temp_struc FROM structures WHERE structures.post_id = _post_id and structures.date_out is NULL;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RAISE EXCEPTION 'Посада % не активна', _post_id; 
+    END;
+    SELECT count(s.stuff_id) INTO am_of_stuff FROM stuff as s WHERE s.post_id = _post_id and s.data_out is NULL;
+    IF am_of_stuff != 0 and am_of_stuff >= _amount THEN
+        RAISE EXCEPTION 'Кількість місць має бути більшою за кількість процюючих на цій посаді';
+    END IF;
+    -- update
+    UPDATE structures SET date_out=now() WHERE date_out is NULL and post_id=_post_id;
+    INSERT INTO structures(post_id, date_in, amount) 
+            VALUES(_post_id, now(), _amount);
+    RETURN am_of_stuff;
+END;
+$function$
+]]></string>
+		</function>
 	</schema>
 	<connector name="PostgreSQL" database="PostgreSQL" driver_class="org.postgresql.Driver" driver_jar="postgresql-9.4-1203.jdbc41.jar" host="52.31.46.192" port="5432" instance="db_project" user="admin" passwd="MTIzMA==" />
 	<layout id="Layout_20898833" name="Default" show_relation_columns="y" >
-		<entity schema="public" name="request_person" color="b7c8e3" x="825" y="705" />
-		<entity schema="public" name="planes" color="b7c8e3" x="210" y="870" />
-		<entity schema="public" name="tasks" color="b7c8e3" x="510" y="795" />
-		<entity schema="public" name="primary_tasks" color="b7c8e3" x="585" y="495" />
-		<entity schema="public" name="skills" color="b7c8e3" x="465" y="510" />
-		<entity schema="public" name="con_primary_task_skill" color="b7c8e3" x="390" y="630" />
-		<entity schema="public" name="vacation_type" color="b7c8e3" x="795" y="420" />
-		<entity schema="public" name="problems" color="b7c8e3" x="135" y="615" />
-		<entity schema="public" name="assigned_tasks" color="b7c8e3" x="840" y="510" />
-		<entity schema="public" name="vacations" color="b7c8e3" x="810" y="195" />
-		<entity schema="public" name="con_person_skill" color="b7c8e3" x="240" y="510" />
-		<entity schema="public" name="current_workers" color="b7c8e3" x="705" y="870" />
-		<entity schema="public" name="posts" color="bfd4f5" x="375" y="255" />
-		<entity schema="public" name="finished_amount_of_tasks" color="b7c8e3" x="45" y="135" />
-		<entity schema="public" name="structures" color="b7c8e3" x="525" y="375" />
-		<entity schema="public" name="con_posts_skills" color="b7c8e3" x="345" y="405" />
-		<entity schema="public" name="stuff" color="bfd4f5" x="630" y="225" />
-		<entity schema="public" name="persons" color="b7c8e3" x="90" y="270" />
-		<entity schema="public" name="complete_posts" color="b7c8e3" x="825" y="45" />
+		<entity schema="public" name="request_person" color="b7c8e3" x="825" y="750" />
+		<entity schema="public" name="planes" color="b7c8e3" x="210" y="915" />
+		<entity schema="public" name="tasks" color="b7c8e3" x="510" y="840" />
+		<entity schema="public" name="skills" color="b7c8e3" x="465" y="555" />
+		<entity schema="public" name="con_primary_task_skill" color="b7c8e3" x="390" y="675" />
+		<entity schema="public" name="problems" color="b7c8e3" x="135" y="660" />
+		<entity schema="public" name="assigned_tasks" color="b7c8e3" x="840" y="555" />
+		<entity schema="public" name="vacations" color="b7c8e3" x="810" y="240" />
+		<entity schema="public" name="con_person_skill" color="b7c8e3" x="240" y="555" />
+		<entity schema="public" name="current_workers" color="b7c8e3" x="705" y="915" />
+		<entity schema="public" name="posts" color="bfd4f5" x="375" y="300" />
+		<entity schema="public" name="finished_amount_of_tasks" color="b7c8e3" x="45" y="180" />
+		<entity schema="public" name="structures" color="b7c8e3" x="525" y="420" />
+		<entity schema="public" name="con_posts_skills" color="b7c8e3" x="345" y="450" />
+		<entity schema="public" name="stuff" color="bfd4f5" x="630" y="270" />
+		<entity schema="public" name="persons" color="b7c8e3" x="90" y="315" />
+		<entity schema="public" name="primary_tasks" color="b7c8e3" x="585" y="570" />
+		<entity schema="public" name="complete_posts" color="b7c8e3" x="825" y="90" />
+		<entity schema="public" name="complete_person" color="b7c8e3" x="315" y="45" />
+		<entity schema="public" name="vacation_type" color="b7c8e3" x="795" y="405" />
 		<script name="skills_002" id="Query_3a1cb8e" language="SQL" >
 			<string><![CDATA[INSERT INTO skills
 	( skill_id, description) VALUES ( 1, 'her' );
 
 ]]></string>
 		</script>
-		<browser id="Browse_22dd93be" name="complete_posts" >
-			<browse_table schema="public" entity="complete_posts" x="10" y="10" width="429" height="330" />
-		</browser>
-		<browser id="Browse_355b5c81" name="complete_posts_001" >
-			<browse_table schema="public" entity="complete_posts" x="10" y="10" width="429" height="330" />
-		</browser>
 		<browser id="Browse_2335da94" name="current_workers" >
 			<browse_table schema="public" entity="current_workers" x="10" y="10" width="200" height="200" />
 		</browser>
 		<browser id="Browse_312bd10e" name="current_workers_001" >
 			<browse_table schema="public" entity="current_workers" x="10" y="10" width="200" height="200" />
-		</browser>
-		<browser id="Browse_173033ec" name="current_workers_002" >
-			<browse_table schema="public" entity="current_workers" x="10" y="10" width="429" height="330" />
 		</browser>
 		<browser id="Browse_1f5ad3b7" name="post" >
 			<browse_table schema="public" entity="posts" x="10" y="10" width="200" height="200" />

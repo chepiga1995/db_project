@@ -9,7 +9,7 @@ BEGIN
  IF char_length(NEW.login) = 0 THEN
       RAISE EXCEPTION 'Поле "Login" має бути не пустим.';
  END IF;
- IF not NEW.access_type in ('hr', 'worker', 'manager') THEN
+ IF not NEW.access_type in ('hr', 'worker', 'manager', 'ceo') THEN
      RAISE EXCEPTION 'Не коректне значення виду доступу';
  END IF;
  IF not NEW.phone_number ~ '^\([0-9]{2}\)-[0-9]{2}-[0-9]{2}-[0-9]{3}$' THEN
