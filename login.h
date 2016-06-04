@@ -2,6 +2,7 @@
 #define LOGIN_H
 #include <QSqlDatabase>
 #include <QDialog>
+#include <QString>
 
 namespace Ui {
 class Login;
@@ -22,6 +23,7 @@ private slots:
 
 private:
     Ui::Login *ui;
+    void loadUser(QString);
 };
 
 #endif // LOGIN_H

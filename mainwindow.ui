@@ -71,12 +71,12 @@
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="persons">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <attribute name="title">
-      <string>Список користувачів</string>
+      <string>Список співробітників</string>
      </attribute>
      <widget class="QTableView" name="tableViewPerson">
       <property name="geometry">
@@ -187,7 +187,7 @@
      </widget>
      <widget class="QGroupBox" name="groupPersonManage">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -280,7 +280,10 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="add_post">
+    <widget class="QWidget" name="posts">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <attribute name="title">
       <string>Список посад</string>
      </attribute>
@@ -388,7 +391,7 @@
      </widget>
      <widget class="QGroupBox" name="groupPostManage">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -453,6 +456,9 @@
      </widget>
     </widget>
     <widget class="QWidget" name="skills">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <attribute name="title">
       <string>Вміння</string>
      </attribute>
@@ -632,6 +638,9 @@
      </widget>
     </widget>
     <widget class="QWidget" name="vacation_type">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <attribute name="title">
       <string>Типи відпусток</string>
      </attribute>

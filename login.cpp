@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include <QSql>
 #include <QSqlQuery>
+#include <QSqlRecord>
 
 
 extern QSqlQuery mainUser;
@@ -48,12 +49,24 @@ void Login::on_pushButton_clicked()
     }
     else
     {
-        MainWindow *mainWindow = new MainWindow();
-        mainWindow->show();
-
-        this->hide();
+        this->loadUser(login);
     }
 }
 
-
+void Login::loadUser(QString login){
+    QSqlQuery query;
+    query.prepare("SELECT access_type "
+                  "FROM persons WHERE login=:login;");
+    query.bindValue(":login", login);
+    query.exec();
+    if(!query.isActive() || !query.size()) {
+        ui->label_4->show();
+        return;
+    }
+    query.first();
+    QSqlRecord data = query.record();
+    MainWindow *mainWindow = new MainWindow(0, data.value(0).toString());
+    mainWindow->show();
+    this->hide();
+}
 

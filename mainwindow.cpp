@@ -16,11 +16,20 @@
 
 //-------------constructor----------
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent, QString access) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    if(access == "hr"){
+        ui->persons->setEnabled(true);
+        ui->tabWidget->setCurrentIndex(0);
+    } else if(access == "ceo") {
+        ui->posts->setEnabled(true);
+        ui->skills->setEnabled(true);
+        ui->vacation_type->setEnabled(true);
+        ui->tabWidget->setCurrentIndex(1);
+    }
     post = new Post;
     skill = new Skill;
     person = new Person;
