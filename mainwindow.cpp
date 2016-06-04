@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "addvacation.h"
 #include "ui_mainwindow.h"
 #include <QSqlQueryModel>
 #include "skill.h"
@@ -336,5 +337,13 @@ void MainWindow::on_personUpdate_clicked()
 {
     UpdatePerson *add = new UpdatePerson(0, person->selected_id);
     add->setModal(true);
+    add->show();
+}
+
+void MainWindow::on_personStartVacation_clicked()
+{
+    AddVacation *add = new AddVacation(0, person->selected_id);
+    add->setModal(true);
+    connect(add, &AddVacation::vacationAdded, this, &MainWindow::refreshPersonPage);
     add->show();
 }
