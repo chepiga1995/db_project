@@ -27,6 +27,11 @@ void AddPost::on_addPost_clicked()
     QString min_salary = ui->postMinSalary->text();
     QString max_salary = ui->postMaxSalary->text();
     QString amount = ui->amountOfpalces->text();
+    QString name = ui->postName->text();
+    if(name.length() > 100) {
+        QMessageBox::critical(this, "Fields", "Назва занадто довга!!") ;
+        return;
+    }
     if(min_salary.length() == 0 || max_salary.length() == 0 || amount.length() == 0){
         QMessageBox::critical(this, "Fields", "Заповніть всі поля!!!") ;
         return;
@@ -38,7 +43,7 @@ void AddPost::on_addPost_clicked()
     }
     query.prepare("SELECT create_post(:name, :description, :min_salary, :max_salary,"
                   " :amount, " + array_text);
-    query.bindValue(":name", ui->postName->text());
+    query.bindValue(":name", name);
     query.bindValue(":description", ui->postDescription->toPlainText());
     query.bindValue(":min_salary", min_salary);
     query.bindValue(":max_salary", max_salary);

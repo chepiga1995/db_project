@@ -28,6 +28,13 @@ void AddPerson::on_addPerson_clicked()
         QMessageBox::critical(this, "Fields", "Заповніть всі поля!!!") ;
         return;
     }
+    if(ui->personName->text().length() > 100 || ui->personLogin->text().length() > 100
+            || ui->personSecondName->text().length() > 100 || ui->personEmail->text().length() > 100
+            || ui->personskype->text().length() > 100) {
+        QMessageBox::critical(this, "Fields", "Поля Імя, Прізвище, Логін, Емаіл, Скайп мають бути коротші ніж 100 символів!!") ;
+        return;
+    }
+
     QSqlQuery query;
     QString array_text = "array[]::int[])";
     if (skills.length() > 0){

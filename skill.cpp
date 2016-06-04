@@ -41,6 +41,10 @@ void Skill::refresh(){
 }
 
 void Skill::addSkill(QString & name, QString & description, QWidget* ui){
+    if(name.length() > 100) {
+        QMessageBox::critical(ui, "Fields", "Назва занадто довга!!") ;
+        return;
+    }
     QSqlQuery query;
     query.prepare("INSERT INTO skills (name, description) "
                   "VALUES (:name, :description)");

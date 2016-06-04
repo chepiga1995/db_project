@@ -42,6 +42,10 @@ void VacationType::refresh(){
 }
 
 void VacationType::addVacationType(QString & name, QString & description, QWidget* ui){
+    if(name.length() > 100) {
+        QMessageBox::critical(ui, "Fields", "Назва занадто довга!!") ;
+        return;
+    }
     QSqlQuery query;
     query.prepare("INSERT INTO vacation_type (name, description) "
                   "VALUES (:name, :description)");
