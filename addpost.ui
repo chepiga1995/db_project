@@ -218,6 +218,16 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>postName</tabstop>
+  <tabstop>postDescription</tabstop>
+  <tabstop>postMinSalary</tabstop>
+  <tabstop>postMaxSalary</tabstop>
+  <tabstop>amountOfpalces</tabstop>
+  <tabstop>postChooseSkills</tabstop>
+  <tabstop>addPost</tabstop>
+  <tabstop>postClose</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

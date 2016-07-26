@@ -40,6 +40,9 @@
    <property name="text">
     <string>()---</string>
    </property>
+   <property name="cursorPosition">
+    <number>1</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_11">
    <property name="geometry">
@@ -62,6 +65,9 @@
      <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="toolTipDuration">
+    <number>4</number>
    </property>
   </widget>
   <widget class="QPushButton" name="addPerson">
@@ -112,6 +118,9 @@
      <height>78</height>
     </rect>
    </property>
+   <property name="toolTipDuration">
+    <number>3</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_9">
    <property name="geometry">
@@ -147,6 +156,9 @@
      <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="toolTipDuration">
+    <number>5</number>
    </property>
    <property name="inputMask">
     <string/>
@@ -209,6 +221,9 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="toolTipDuration">
+    <number>1</number>
+   </property>
   </widget>
   <widget class="QLineEdit" name="personSecondName">
    <property name="geometry">
@@ -218,6 +233,12 @@
      <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="toolTipDuration">
+    <number>2</number>
+   </property>
+   <property name="cursorPosition">
+    <number>0</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_16">
@@ -446,6 +467,22 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>personName</tabstop>
+  <tabstop>personSecondName</tabstop>
+  <tabstop>personEducation</tabstop>
+  <tabstop>personEmail</tabstop>
+  <tabstop>personLogin</tabstop>
+  <tabstop>personBirthday</tabstop>
+  <tabstop>personAccessType</tabstop>
+  <tabstop>personPhone</tabstop>
+  <tabstop>personskype</tabstop>
+  <tabstop>personChooseSkills</tabstop>
+  <tabstop>personChoosePost</tabstop>
+  <tabstop>personSalary</tabstop>
+  <tabstop>addPerson</tabstop>
+  <tabstop>closePost</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

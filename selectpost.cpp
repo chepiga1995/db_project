@@ -14,14 +14,15 @@ SelectPost::SelectPost(QWidget *parent) :
     ui->setupUi(this);
     model = new QSqlQueryModel();
     QSqlQuery query;
-    query.prepare("SELECT post_id, name, min_salary, max_salary FROM complete_posts");
+    query.prepare("SELECT post_id, name, min_salary, max_salary, (amount-work) as free FROM complete_posts where amount>work");
     query.exec();
 
     model->setQuery(query);
     model->setHeaderData(0, Qt::Horizontal, tr("Id"));
     model->setHeaderData(1, Qt::Horizontal, tr("Назва"));
-    model->setHeaderData(2, Qt::Horizontal, tr("Мінімальна зарплата"));
-    model->setHeaderData(3, Qt::Horizontal, tr("Максимальна зарплата"));
+    model->setHeaderData(2, Qt::Horizontal, tr("Мін зарплата"));
+    model->setHeaderData(3, Qt::Horizontal, tr("Макс зарплата"));
+    model->setHeaderData(4, Qt::Horizontal, tr("Вільно"));
 
     ui->tableViewPost->setModel(model);
 }

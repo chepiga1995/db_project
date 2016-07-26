@@ -797,6 +797,39 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>addPerson</tabstop>
+  <tabstop>personGenerateReport</tabstop>
+  <tabstop>personNameSearch</tabstop>
+  <tabstop>personLastNameSearch</tabstop>
+  <tabstop>personSearch</tabstop>
+  <tabstop>personChangePost</tabstop>
+  <tabstop>personFired</tabstop>
+  <tabstop>personUpdate</tabstop>
+  <tabstop>personStartVacation</tabstop>
+  <tabstop>personEndVacation</tabstop>
+  <tabstop>addPost</tabstop>
+  <tabstop>postNameSearch</tabstop>
+  <tabstop>postSearch</tabstop>
+  <tabstop>postNewAmount</tabstop>
+  <tabstop>postApplyNewAmount</tabstop>
+  <tabstop>postClose</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>findSkill</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>textEdit</tabstop>
+  <tabstop>addSkill</tabstop>
+  <tabstop>lineEdit_3</tabstop>
+  <tabstop>findVacationType</tabstop>
+  <tabstop>lineEdit_4</tabstop>
+  <tabstop>textEdit_2</tabstop>
+  <tabstop>addVacationType</tabstop>
+  <tabstop>tableViewSkill</tabstop>
+  <tabstop>tableViewPost</tabstop>
+  <tabstop>tableViewPerson</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>tableViewVacationType</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
